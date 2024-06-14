@@ -9,6 +9,7 @@ class VectorDatabaseInterface:
         self,
         pinecone_token: str,
         pinecone_index_name: str,
+        pinecone_namespace: str,
         embeddings_model: SentenceTransformer,
         batch_size: int = 250,
     ):
@@ -16,6 +17,7 @@ class VectorDatabaseInterface:
         self.model = embeddings_model
         pc = Pinecone(api_key=pinecone_token)
         self.index = pc.Index(pinecone_index_name)
+        self.pinecone_namespace = pinecone_namespace
 
     def upsert_polars(self, df: pl.DataFrame, key_column: str, text_column: str):
         df_chunks = self._split_dataframe_in_batches(df)
@@ -24,7 +26,9 @@ class VectorDatabaseInterface:
 
     def find_similar(self, query: str, top_k: int = 25) -> pl.DataFrame:
         embeddings = self.model.encode(query)
-        matches = self.index.query(namespace="ns1", vector=embeddings.tolist(), top_k=top_k, include_values=False)
+        matches = self.index.query(
+            namespace=self.pinecone_namespace, vector=embeddings.tolist(), top_k=top_k, include_values=False
+        )
         return pl.from_dicts([{"name": x["id"], "similarity": x["score"]} for x in matches["matches"]])
 
     def _upsert_chunk(self, chunk: pl.DataFrame, key_column: str, text_column: str):
@@ -32,7 +36,7 @@ class VectorDatabaseInterface:
         vectors = [
             {"id": project_name, "values": embedding} for project_name, embedding in zip(chunk[key_column], embeddings)
         ]
-        self.index.upsert(vectors=vectors, namespace="ns1")
+        self.index.upsert(vectors=vectors, namespace=self.pinecone_namespace)
 
     def _split_dataframe_in_batches(self, df):
         n_chunks = (df.height + self.batch_size - 1) // self.batch_size

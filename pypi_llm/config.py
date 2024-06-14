@@ -7,6 +7,7 @@ from pathlib import Path
 class Config:
     DATA_DIR: Path = Path("data")
     PINECONE_INDEX_NAME = "pypi"
+    PINECONE_NAMESPACE = "ns1"
     PINECONE_TOKEN: str = field(default_factory=lambda: os.getenv("PINECONE_TOKEN"))
     EMBEDDINGS_MODEL_NAME = "all-mpnet-base-v2"
     EMBEDDINGS_DIMENSION = 768

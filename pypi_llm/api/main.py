@@ -34,7 +34,10 @@ model = SentenceTransformer(config.EMBEDDINGS_MODEL_NAME)
 
 # Initialize vector database interface
 vector_database_interface = VectorDatabaseInterface(
-    pinecone_token=config.PINECONE_TOKEN, pinecone_index_name=config.PINECONE_INDEX_NAME, embeddings_model=model
+    pinecone_token=config.PINECONE_TOKEN,
+    pinecone_index_name=config.PINECONE_INDEX_NAME,
+    embeddings_model=model,
+    pinecone_namespace=config.PINECONE_NAMESPACE,
 )
 
 

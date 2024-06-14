@@ -23,6 +23,7 @@ if __name__ == "__main__":
         pinecone_token=config.PINECONE_TOKEN,
         pinecone_index_name=config.PINECONE_INDEX_NAME,
         embeddings_model=SentenceTransformer(config.EMBEDDINGS_MODEL_NAME),
+        pinecone_namespace=config.PINECONE_NAMESPACE,
     )
 
     df = df.with_columns(
