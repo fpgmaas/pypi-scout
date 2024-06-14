@@ -25,4 +25,7 @@ if __name__ == "__main__":
         embeddings_model=SentenceTransformer(config.EMBEDDINGS_MODEL_NAME),
     )
 
-    vector_database_interface.upsert_polars(df, key_column="name", text_column="description_cleaned")
+    df = df.with_columns(
+        summary_and_description_cleaned=pl.concat_str(pl.col("summary"), pl.lit(" "), pl.col("description_cleaned"))
+    )
+    vector_database_interface.upsert_polars(df, key_column="name", text_column="summary_and_description_cleaned")

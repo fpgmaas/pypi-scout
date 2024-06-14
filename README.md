@@ -51,22 +51,6 @@ Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgma
 
 ---
 
-## Download counts
-
-```sql
-SELECT
-  project,
-  COUNT(*) AS download_count
-FROM
-  `bigquery-public-data.pypi.file_downloads`
-WHERE
-  DATE(timestamp) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 28 DAY) AND CURRENT_DATE()
-GROUP BY
-  project
-ORDER BY
-  download_count DESC;
-```
-
 ## total
 
 ```sql
