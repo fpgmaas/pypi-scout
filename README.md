@@ -49,7 +49,6 @@ For more details, see [here](https://fpgmaas.github.io/cookiecutter-poetry/featu
 
 Repository initiated with [fpgmaas/cookiecutter-poetry](https://github.com/fpgmaas/cookiecutter-poetry).
 
-
 ---
 
 ## Download counts
@@ -85,10 +84,11 @@ WITH recent_downloads AS (
     download_count >= 250
 )
 SELECT
-  rd.project AS project_name,
-  dm.description AS project_description,
-  dm.version AS latest_project_version,
-  rd.download_count AS project_number_of_downloads
+  rd.project AS name,
+  dm.description AS description,
+  dm.summary AS summary,
+  dm.version AS latest_version,
+  rd.download_count AS number_of_downloads
 FROM
   recent_downloads rd
 JOIN

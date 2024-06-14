@@ -1,6 +1,7 @@
-from pathlib import Path
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
+
 
 @dataclass
 class Config:
@@ -12,4 +13,4 @@ class Config:
 
     def __post_init__(self):
         if not self.PINECONE_TOKEN:
-            raise EnvironmentError("PINECONE_TOKEN not found in environment variables")
+            raise OSError("PINECONE_TOKEN not found in environment variables")  # noqa: TRY003
