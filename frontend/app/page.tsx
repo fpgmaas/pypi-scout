@@ -1,53 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import axios from "axios";
-import SearchResultsTable from "../components/SearchResultsTable";
+import { handleSearch, sortResults } from "./utils/search";
+import SearchResultsTable from "./components/SearchResultsTable";
+import InfoBox from "./components/InfoBox";
 import { ClipLoader } from "react-spinners";
 
+interface Match {
+  name: string;
+  similarity: number;
+  weekly_downloads: number;
+  summary: string;
+}
+
 export default function Home() {
-  const [text, setText] = useState("");
-  const [results, setResults] = useState([]);
-  const [sortField, setSortField] = useState("weekly_downloads");
-  const [sortDirection, setSortDirection] = useState("desc");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [infoBoxVisible, setInfoBoxVisible] = useState(false);
+  const [text, setText] = useState<string>("");
+  const [results, setResults] = useState<Match[]>([]);
+  const [sortField, setSortField] = useState<string>("similarity");
+  const [sortDirection, setSortDirection] = useState<string>("desc");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [infoBoxVisible, setInfoBoxVisible] = useState<boolean>(false);
 
-  const handleSearch = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/search",
-        {
-          query: text,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const fetchedResults = response.data.matches;
-      setResults(sortResults(fetchedResults, sortField, sortDirection));
-    } catch (error) {
-      setError("Error fetching search results.");
-      console.error("Error fetching search results:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const sortResults = (data, field, direction) => {
-    return [...data].sort((a, b) => {
-      if (a[field] < b[field]) return direction === "asc" ? -1 : 1;
-      if (a[field] > b[field]) return direction === "asc" ? 1 : -1;
-      return 0;
-    });
-  };
-
-  const handleSort = (field) => {
+  const handleSort = (field: string) => {
     const direction =
       sortField === field && sortDirection === "asc" ? "desc" : "asc";
     setSortField(field);
@@ -72,7 +47,16 @@ export default function Home() {
         ></textarea>
         <button
           className="w-[250px] p-2 border rounded bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onClick={handleSearch}
+          onClick={() =>
+            handleSearch(
+              text,
+              sortField,
+              sortDirection,
+              setResults,
+              setLoading,
+              setError,
+            )
+          }
         >
           Search
         </button>
@@ -91,20 +75,7 @@ export default function Home() {
         </button>
       </div>
 
-      {infoBoxVisible && (
-        <div className="w-3/5 bg-white p-6 rounded-lg shadow-lg mt-4">
-          <h2 className="text-2xl font-bold mb-2">How does this work?</h2>
-          <p className="text-gray-700">
-            This application allows you to search for Python packages on PyPi
-            using natural language. So an example query would be "a package that
-            creates plots and beautiful visualizations". Once you click search,
-            your query will be matched against the summary and the first part of
-            the description of all PyPi packages with more than 50 weekly
-            downloads, and the 50 most similar results will be displayed in a
-            table below.
-          </p>
-        </div>
-      )}
+      <InfoBox infoBoxVisible={infoBoxVisible} />
 
       {results.length > 0 && (
         <div className="w-full flex justify-center mt-6">

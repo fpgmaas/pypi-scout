@@ -1,3 +1,5 @@
+import logging
+
 import polars as pl
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -6,8 +8,11 @@ from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 
 from pypi_llm.config import Config
+from pypi_llm.utils.logging import setup_logging
 from pypi_llm.utils.score_calculator import calculate_score
 from pypi_llm.vector_database import VectorDatabaseInterface
+
+setup_logging()
 
 app = FastAPI()
 
@@ -55,12 +60,20 @@ class SearchResponse(BaseModel):
 
 @app.post("/search/", response_model=SearchResponse)
 async def search(query: QueryModel):
+    """
+    Search for the packages whose summary and description have the highest similarity to the query.
+    We take the top_k * 2 most similar packages, and then calculate weighted score based on the similarity and weekly downloads.
+    The top_k packages with the highest score are returned.
+    """
+
+    logging.info(f"Searching for similar projects. Query: '{query.query}'")
     df_matches = vector_database_interface.find_similar(query.query, top_k=query.top_k * 2)
     df_matches = df_matches.join(df, how="left", on="name")
 
+    logging.info("Found similar projects. Calculating the weighted scores and filtering...")
     df_matches = calculate_score(df_matches)
     df_matches = df_matches.sort("score", descending=True)
     df_matches = df_matches.head(query.top_k)
 
-    print("sending")
+    logging.info("Returning the results...")
     return SearchResponse(matches=df_matches.to_dicts())
