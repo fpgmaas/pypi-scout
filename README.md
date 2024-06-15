@@ -1,7 +1,9 @@
 <p align="center">
-  <img alt="deptry logo" width="380" height="200" src="./static/pypi.svg">
+  <picture>
+    <source srcset="./static/pypi-light.svg" media="(prefers-color-scheme: light)">
+    <img alt="deptry logo" width="420" height="200" src="./static/pypi.svg">
+  </picture>
 </p>
-
 PyPI Scout helps you find PyPI packages through natural language prompts using Large Language Models (LLM's).
 
 ![Demo](./static/demo.gif)
