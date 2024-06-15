@@ -6,6 +6,19 @@ PyPI Scout helps you find PyPI packages through natural language prompts using L
 
 The project works by collecting project summaries and descriptions for all packages on PyPI with more than 50 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to the amount of weekly downloads before presenting the results to the user in a dashboard.
 
+## Architecture Overview
+
+The project uses the following technologies:
+
+1. **[Pinecone](https://www.pinecone.io/)** as vector database
+2. **[FastAPI](https://fastapi.tiangolo.com/)** for the API backend
+3. **[NextJS](https://nextjs.org/) and [TailwindCSS](https://tailwindcss.com/)** for the frontend
+4. **[Sentence Transformers](https://www.sbert.net/)** for vector embeddings
+
+<br/>
+
+![Architecture](./architecture.png)
+
 ## Getting Started
 
 ### Prerequisites
