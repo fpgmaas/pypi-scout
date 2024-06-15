@@ -31,22 +31,29 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-start min-h-screen p-4 space-y-4 bg-gray-100">
-      <header className="w-full text-center mb-4">
-        <h1 className="text-4xl font-bold p-2 mt-4">✨PyPI Scout</h1>
-        <p className="text-lg text-gray-600">
+    <main className="flex flex-col items-center justify-start min-h-screen p-4 space-y-4 bg-gray-900">
+      <header className="w-full flex flex-col items-center text-center mb-4">
+        <picture>
+          <img
+            alt="pypi-scout logo"
+            width="420"
+            height="220"
+            src="./pypi.svg"
+          ></img>
+        </picture>
+        <p className="text-lg text-gray-300 mt-2">
           Enter your query to search for Python packages
         </p>
       </header>
-      <div className="flex flex-col items-center space-y-4 w-3/5 bg-white p-6 rounded-lg shadow-lg">
+      <div className="flex flex-col items-center space-y-4 w-3/5 bg-gray-800 p-6 rounded-lg shadow-lg">
         <textarea
-          className="w-full h-24 p-2 border rounded resize-none overflow-auto focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full h-24 p-2 border border-gray-700 rounded resize-none overflow-auto focus:outline-none focus:ring-2 focus:ring-blue-700 bg-gray-700 text-white"
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Enter your query here..."
         ></textarea>
         <button
-          className="w-[250px] p-2 border rounded bg-blue-500 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-[250px] p-2 border border-gray-700 rounded bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700"
           onClick={() =>
             handleSearch(
               text,
@@ -68,7 +75,7 @@ export default function Home() {
 
       <div className="w-full flex justify-center mt-6">
         <button
-          className="w-[250px] p-2 border rounded bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          className="w-[250px] p-2 border border-gray-700 rounded bg-gray-600 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700"
           onClick={() => setInfoBoxVisible(!infoBoxVisible)}
         >
           {infoBoxVisible ? "Hide Info" : "How does this work?"}
@@ -79,7 +86,7 @@ export default function Home() {
 
       {results.length > 0 && (
         <div className="w-full flex justify-center mt-6">
-          <div className="w-11/12 bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+          <div className="w-11/12 bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col items-center">
             <SearchResultsTable
               results={results}
               sortField={sortField}

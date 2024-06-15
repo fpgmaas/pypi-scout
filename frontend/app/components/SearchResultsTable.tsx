@@ -27,11 +27,11 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
 
   return (
     <div className="overflow-x-auto w-full">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+      <table className="min-w-full divide-y divide-gray-700">
+        <thead className="bg-gray-800">
           <tr>
             <th
-              className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer whitespace-nowrap"
+              className="px-4 py-2 text-left text-xs font-medium text-gray-200 uppercase tracking-wider cursor-pointer whitespace-nowrap"
               onClick={() => onSort("name")}
             >
               <div className="flex items-center">
@@ -39,7 +39,7 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
               </div>
             </th>
             <th
-              className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer whitespace-nowrap"
+              className="px-4 py-2 text-left text-xs font-medium text-gray-200 uppercase tracking-wider cursor-pointer whitespace-nowrap"
               onClick={() => onSort("similarity")}
             >
               <div className="flex items-center">
@@ -48,7 +48,7 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
               </div>
             </th>
             <th
-              className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer whitespace-nowrap"
+              className="px-4 py-2 text-left text-xs font-medium text-gray-200 uppercase tracking-wider cursor-pointer whitespace-nowrap"
               onClick={() => onSort("weekly_downloads")}
             >
               <div className="flex items-center">
@@ -58,25 +58,27 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
                 </span>
               </div>
             </th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 py-2 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">
               Summary
             </th>
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-4 py-2 text-left text-xs font-medium text-gray-200 uppercase tracking-wider">
               Link
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-gray-800 divide-y divide-gray-700">
           {results.map((result, index) => (
-            <tr key={index} className="hover:bg-gray-100">
-              <td className="px-4 py-2 whitespace-nowrap">{result.name}</td>
-              <td className="px-4 py-2 whitespace-nowrap">
+            <tr key={index} className="hover:bg-gray-700">
+              <td className="px-4 py-2 whitespace-nowrap text-gray-200">
+                {result.name}
+              </td>
+              <td className="px-4 py-2 whitespace-nowrap text-gray-200">
                 {result.similarity.toFixed(3)}
               </td>
-              <td className="px-4 py-2 whitespace-nowrap">
+              <td className="px-4 py-2 whitespace-nowrap text-gray-200">
                 {result.weekly_downloads.toLocaleString()}
               </td>
-              <td className="px-4 py-2 whitespace-normal break-words">
+              <td className="px-4 py-2 whitespace-normal break-words text-gray-200">
                 {result.summary}
               </td>
               <td className="px-4 py-2 whitespace-nowrap">
@@ -84,7 +86,7 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
                   href={`https://pypi.org/project/${result.name}/`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline flex items-center"
+                  className="text-blue-400 hover:underline flex items-center"
                 >
                   <FaExternalLinkAlt className="mr-1" />
                   PyPI
