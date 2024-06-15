@@ -20,8 +20,8 @@ const InfoBox: React.FC<InfoBoxProps> = ({ infoBoxVisible }) => {
         Once you click search, your query will be matched against the summary
         and the first part of the description of all PyPI packages with more
         than 50 weekly downloads. The results are then scored based on their
-        similarity and their number of weekly downloads, and the thirty best
-        results are displayed in the table below.
+        similarity and their number of weekly downloads, and the best results
+        are displayed in the table below.
       </p>
     </div>
   );

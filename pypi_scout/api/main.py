@@ -44,7 +44,7 @@ vector_database_interface = VectorDatabaseInterface(
 
 class QueryModel(BaseModel):
     query: str
-    top_k: int = 30
+    top_k: int = 50
 
 
 class Match(BaseModel):

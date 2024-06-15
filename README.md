@@ -52,7 +52,8 @@ There are three methods to run the setup script, dependent on if you have a NVID
 - [Option 3: Using Docker without NVIDIA GPU and NVIDIA Container Toolkit](SETUP.md#option-3-using-docker-without-nvidia-gpu-and-nvidia-container-toolkit)
 
 > [!IMPORTANT]
-> Since the creation of embedding vectors can take quite some time, by default only the 10% of the dataset with the most weekly downloads is used. To use the full dataset, set `FRAC_DATA_TO_INCLUDE` to `1.0` in `pypi_scout/config.py`
+> By default only the 10% of the dataset with the most weekly downloads is added to the vector database. This includes all packages with approximately 5.000
+> downloads per week. To also add less popular packages to the dataset, increase the value of `FRAC_DATA_TO_INCLUDE` in `pypi_scout/config.py`.
 
 #### 2. **Run the Application**
 
