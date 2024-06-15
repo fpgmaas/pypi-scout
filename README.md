@@ -1,10 +1,8 @@
 # ✨PyPi Scout
 
-<div align="center">
-  <video src="pypi-scout.mp4" width="820" />
-</div>
-
 PyPi Scout helps you find PyPi packages using natural language prompts powered by Large Language Models (LLMs).
+
+![Demo](./demo.gif)
 
 The project works by collecting project summaries and descriptions for all packages on PyPI with more than 50 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to weekly downloads before presenting the results to the user in a dashboard.
 
