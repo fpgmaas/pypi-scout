@@ -33,7 +33,7 @@ The project uses the following technologies:
 
 2. **Set Up Pinecone**
 
-   Since PyPI Scout uses [Pinecone](https://www.pinecone.io/) as the vector database, register for a free account on their website. Obtain your API key from [here](https://docs.pinecone.io/guides/get-started/quickstart) and add it to your `.env` file.
+   Since PyPI Scout uses [Pinecone](https://www.pinecone.io/) as the vector database, register for a free account on their website. Obtain your API key using the instructions [here](https://docs.pinecone.io/guides/get-started/quickstart) and add it to your `.env` file.
 
 ### Build and Setup
 
