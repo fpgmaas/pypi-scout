@@ -12,6 +12,7 @@ export default function Home() {
   const [sortDirection, setSortDirection] = useState("desc");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [infoBoxVisible, setInfoBoxVisible] = useState(false);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -28,10 +29,8 @@ export default function Home() {
           },
         },
       );
-      const sortedResults = response.data.matches.sort(
-        (a, b) => b.weekly_downloads - a.weekly_downloads,
-      );
-      setResults(sortedResults);
+      const fetchedResults = response.data.matches;
+      setResults(sortResults(fetchedResults, sortField, sortDirection));
     } catch (error) {
       setError("Error fetching search results.");
       console.error("Error fetching search results:", error);
@@ -40,17 +39,20 @@ export default function Home() {
     }
   };
 
-  const sortResults = (field) => {
-    const direction =
-      sortField === field && sortDirection === "asc" ? "desc" : "asc";
-    const sorted = [...results].sort((a, b) => {
+  const sortResults = (data, field, direction) => {
+    return [...data].sort((a, b) => {
       if (a[field] < b[field]) return direction === "asc" ? -1 : 1;
       if (a[field] > b[field]) return direction === "asc" ? 1 : -1;
       return 0;
     });
-    setResults(sorted);
+  };
+
+  const handleSort = (field) => {
+    const direction =
+      sortField === field && sortDirection === "asc" ? "desc" : "asc";
     setSortField(field);
     setSortDirection(direction);
+    setResults(sortResults(results, field, direction));
   };
 
   return (
@@ -80,17 +82,38 @@ export default function Home() {
         {error && <p className="text-red-500">{error}</p>}
       </div>
 
+      <div className="w-full flex justify-center mt-6">
+        <button
+          className="w-[250px] p-2 border rounded bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          onClick={() => setInfoBoxVisible(!infoBoxVisible)}
+        >
+          {infoBoxVisible ? "Hide Info" : "How does this work?"}
+        </button>
+      </div>
+
+      {infoBoxVisible && (
+        <div className="w-3/5 bg-white p-6 rounded-lg shadow-lg mt-4">
+          <h2 className="text-2xl font-bold mb-2">How does this work?</h2>
+          <p className="text-gray-700">
+            This application allows you to search for Python packages on PyPi
+            using natural language. So an example query would be "a package that
+            creates plots and beautiful visualizations". Once you click search,
+            your query will be matched against the summary and the first part of
+            the description of all PyPi packages with more than 50 weekly
+            downloads, and the 50 most similar results will be displayed in a
+            table below.
+          </p>
+        </div>
+      )}
+
       {results.length > 0 && (
         <div className="w-full flex justify-center mt-6">
           <div className="w-11/12 bg-white p-6 rounded-lg shadow-lg flex flex-col items-center">
-            <p className="mb-4 text-gray-700">
-              Displaying the {results.length} most similar results:
-            </p>
             <SearchResultsTable
               results={results}
               sortField={sortField}
               sortDirection={sortDirection}
-              onSort={sortResults}
+              onSort={handleSort}
             />
           </div>
         </div>
