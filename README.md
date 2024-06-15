@@ -1,19 +1,19 @@
-# pypi-llm
+# pypi-scout
 
 https://drive.google.com/file/d/1huR7-VD3AieBRCcQyRX9MWbPLMb_czjq/view?usp=sharing
 
 # setup
 
 ```
-docker build -t pypi-llm .
+docker build -t pypi-scout .
 ```
 
 ```
 docker run --rm \
   --env-file .env \
   -v $(pwd)/data:/code/data \
-  pypi-llm \
-  python /code/pypi_llm/scripts/1_download_dataset.py
+  pypi-scout \
+  python /code/pypi_scout/scripts/1_download_dataset.py
 ```
 
 ## total

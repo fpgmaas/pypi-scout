@@ -16,8 +16,8 @@ COPY poetry.lock pyproject.toml /code/
 RUN poetry install --no-interaction --no-ansi --no-root --no-dev
 
 # Copy Python code to the Docker image
-COPY pypi_llm /code/pypi_llm/
+COPY pypi_scout /code/pypi_scout/
 
 ENV PYTHONPATH=/code
 
-CMD [ "python", "pypi_llm/foo.py"]
+CMD [ "python", "pypi_scout/foo.py"]

@@ -3,8 +3,8 @@ import logging
 from dotenv import load_dotenv
 from pinecone import Pinecone, ServerlessSpec
 
-from pypi_llm.config import Config
-from pypi_llm.utils.logging import setup_logging
+from pypi_scout.config import Config
+from pypi_scout.utils.logging import setup_logging
 
 setup_logging()
 

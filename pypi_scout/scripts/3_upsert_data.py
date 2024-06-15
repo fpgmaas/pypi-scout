@@ -4,9 +4,9 @@ import polars as pl
 from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 
-from pypi_llm.config import Config
-from pypi_llm.utils.logging import setup_logging
-from pypi_llm.vector_database import VectorDatabaseInterface
+from pypi_scout.config import Config
+from pypi_scout.utils.logging import setup_logging
+from pypi_scout.vector_database import VectorDatabaseInterface
 
 setup_logging()
 

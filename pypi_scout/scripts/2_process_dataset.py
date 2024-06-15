@@ -3,10 +3,10 @@ import logging
 import polars as pl
 from dotenv import load_dotenv
 
-from pypi_llm.config import Config
-from pypi_llm.data.description_cleaner import CLEANING_FAILED, DescriptionCleaner
-from pypi_llm.data.reader import DataReader
-from pypi_llm.utils.logging import setup_logging
+from pypi_scout.config import Config
+from pypi_scout.data.description_cleaner import CLEANING_FAILED, DescriptionCleaner
+from pypi_scout.data.reader import DataReader
+from pypi_scout.utils.logging import setup_logging
 
 setup_logging()
 

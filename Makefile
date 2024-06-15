@@ -36,7 +36,7 @@ docs: ## Build and serve the documentation
 
 .PHONY: serve
 serve: ## Serve API with uvicorn
-	@poetry run uvicorn pypi_llm.api.main:app --reload
+	@poetry run uvicorn pypi_scout.api.main:app --reload
 
 .PHONY: help
 help:
