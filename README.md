@@ -1,4 +1,6 @@
-# ✨PyPI Scout
+<p align="center">
+  <img alt="deptry logo" width="380" height="200" src="./static/pypi.svg">
+</p>
 
 PyPI Scout helps you find PyPI packages through natural language prompts using Large Language Models (LLM's).
 
