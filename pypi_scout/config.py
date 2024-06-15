@@ -21,6 +21,11 @@ class Config:
     # Defaults to 0.1, change this to 1.0 to include the entire dataset.
     FRAC_DATA_TO_INCLUDE = 0.1
 
+    # Weights for the similarity calculation. Higher values for WEIGHT_WEEKLY_DOWNLOADS
+    # will prioritize displaying packages with higher weekly downloads.
+    WEIGHT_SIMILARITY = 0.8
+    WEIGHT_WEEKLY_DOWNLOADS = 0.2
+
     def __post_init__(self) -> None:
         if not self.PINECONE_TOKEN:
             raise OSError("PINECONE_TOKEN not found in environment variables")  # noqa: TRY003

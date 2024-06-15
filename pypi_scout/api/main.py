@@ -1,12 +1,12 @@
 import logging
 
-import polars as pl
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
 
+from pypi_scout.api.utils import load_dataset
 from pypi_scout.config import Config
 from pypi_scout.utils.logging import setup_logging
 from pypi_scout.utils.score_calculator import calculate_score
@@ -31,7 +31,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-df = pl.read_csv(config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
+df = load_dataset(config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
+
 model = SentenceTransformer(config.EMBEDDINGS_MODEL_NAME)
 
 vector_database_interface = VectorDatabaseInterface(
@@ -71,7 +72,9 @@ async def search(query: QueryModel):
     df_matches = df_matches.join(df, how="left", on="name")
 
     logging.info("Found similar projects. Calculating the weighted scores and filtering...")
-    df_matches = calculate_score(df_matches)
+    df_matches = calculate_score(
+        df_matches, weight_similarity=config.WEIGHT_SIMILARITY, weight_weekly_downloads=config.WEIGHT_WEEKLY_DOWNLOADS
+    )
     df_matches = df_matches.sort("score", descending=True)
     df_matches = df_matches.head(query.top_k)
 
