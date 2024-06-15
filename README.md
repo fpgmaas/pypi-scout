@@ -1,13 +1,6 @@
-<!-- <p align="center">
-  <picture>
-    <source srcset="./static/pypi-light.svg" media="(prefers-color-scheme: light)">
-    <img alt="pypi-scout logo" width="420" height="200" src="./static/pypi.svg">
-  </picture>
-</p> -->
-
 # ✨ PyPI Scout
 
-PyPI Scout helps you find PyPI packages through natural language prompts using Large Language Models (LLM's).
+PyPI Scout helps you find PyPI packages through natural language prompts with the help of Large Language Models (LLMs).
 
 ![Demo](./static/demo.gif)
 
