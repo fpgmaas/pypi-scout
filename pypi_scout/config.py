@@ -17,8 +17,11 @@ class Config:
     PROCESSED_DATASET_CSV_NAME = "processed_dataset.csv"
     GOOGLE_FILE_ID = "1huR7-VD3AieBRCcQyRX9MWbPLMb_czjq"
 
-    # The fraction of the dataset to include in the vector database.
-    # Defaults to 0.1, change this to 1.0 to include the entire dataset.
+    # The number of results to return for a query.
+    N_RESULTS_TO_RETURN = 30
+
+    # The fraction of the dataset to include in the vector database. Defaults to 0.1,
+    # change this to 1.0 to include the entire dataset.
     FRAC_DATA_TO_INCLUDE = 0.1
 
     # Weights for the similarity calculation. Higher values for WEIGHT_WEEKLY_DOWNLOADS

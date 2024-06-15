@@ -45,7 +45,7 @@ vector_database_interface = VectorDatabaseInterface(
 
 class QueryModel(BaseModel):
     query: str
-    top_k: int = 50
+    top_k: int = config.N_RESULTS_TO_RETURN
 
 
 class Match(BaseModel):
