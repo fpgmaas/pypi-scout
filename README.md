@@ -2,7 +2,7 @@
 
 PyPI Scout helps you find PyPI packages through natural language prompts using Large Language Models (LLM's).
 
-![Demo](./demo.gif)
+![Demo](./static/demo.gif)
 
 The project works by collecting project summaries and descriptions for all packages on PyPI with more than 50 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to the amount of weekly downloads before presenting the results to the user in a dashboard.
 
@@ -17,7 +17,7 @@ The project uses the following technologies:
 
 <br/>
 
-![Architecture](./architecture.png)
+![Architecture](./static/architecture.png)
 
 ## Getting Started
 
@@ -67,3 +67,5 @@ After a short while, your application will be live at [http://localhost:3000](ht
 ## Data
 
 The dataset for this project is created using the [PyPI dataset on Google BigQuery](https://console.cloud.google.com/marketplace/product/gcp-public-data-pypi/pypi?project=regal-net-412415). The SQL query used can be found in [pypi_bigquery.sql](./pypi_bigquery.sql). The resulting dataset is available as a CSV file on [Google Drive](https://drive.google.com/file/d/1huR7-VD3AieBRCcQyRX9MWbPLMb_czjq/view?usp=sharing).
+
+## Acknowledgements

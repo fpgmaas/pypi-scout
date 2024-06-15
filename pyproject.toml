@@ -15,7 +15,6 @@ python = ">=3.8,<4.0"
 beautifulsoup4 = "^4.12.3"
 polars = "^0.20.31"
 sentence-transformers = "^3.0.1"
-torch = "^2.3.1"
 lxml = "^5.2.2"
 python-dotenv = "^1.0.1"
 pinecone = "^4.0.0"
@@ -112,3 +111,11 @@ source = ["pypi_scout"]
 
 [tool.ruff.per-file-ignores]
 "tests/*" = ["S101"]
+
+[tool.deptry]
+extend_exclude = [
+    "frontend"
+]
+
+[tool.deptry.per_rule_ignores]
+DEP002 = ["lxml", "uvicorn"]
