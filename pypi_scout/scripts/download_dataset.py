@@ -14,10 +14,14 @@ def download_dataset():
     load_dotenv()
     config = Config()
 
-    logging.info("Downloading raw dataset from Google Drive...")
+    target_path = config.DATA_DIR / config.RAW_DATASET_CSV_NAME
+    if target_path.exists():
+        logging.info(f"Raw dataset {target_path} from Google Drive already exists! Skipping download.")
+        return
+
+    logging.info(f"Downloading raw dataset from Google Drive to {target_path}...")
     url = f"https://drive.google.com/uc?id={config.GOOGLE_FILE_ID}"
-    output = str(config.DATA_DIR / config.RAW_DATASET_CSV_NAME)
-    gdown.download(url, output, quiet=False)
+    gdown.download(url, target_path, quiet=False)
     logging.info("Done!")
 
 

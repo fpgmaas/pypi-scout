@@ -10,7 +10,7 @@ CLEANING_FAILED = "cleaning failed!"
 @dataclass
 class DescriptionCleaner:
     """
-    A class that provides methods to clean PyPi package descriptions in a DataFrame column.
+    A class that provides methods to clean PyPI package descriptions in a DataFrame column.
     """
 
     def clean(self, df: pl.DataFrame, input_col: str, output_col: str) -> pl.DataFrame:

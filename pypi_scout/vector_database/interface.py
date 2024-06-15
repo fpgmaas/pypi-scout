@@ -22,7 +22,7 @@ class VectorDatabaseInterface:
         pinecone_index_name: str,
         pinecone_namespace: str,
         embeddings_model: SentenceTransformer,
-        batch_size: int = 250,
+        batch_size: int = 128,
     ):
         self.batch_size = batch_size
         self.model = embeddings_model
@@ -61,11 +61,11 @@ class VectorDatabaseInterface:
         return pl.from_dicts([{"name": x["id"], "similarity": x["score"]} for x in matches["matches"]])
 
     def _upsert_chunk(self, chunk: pl.DataFrame, key_column: str, text_column: str):
-        embeddings = self.model.encode(list(chunk[text_column]))
+        embeddings = self.model.encode(list(chunk[text_column]), show_progress_bar=False)
         vectors = [
             {"id": project_name, "values": embedding} for project_name, embedding in zip(chunk[key_column], embeddings)
         ]
-        self.index.upsert(vectors=vectors, namespace=self.pinecone_namespace)
+        self.index.upsert(vectors=vectors, namespace=self.pinecone_namespace, show_progress=False)
 
     def _split_dataframe_in_batches(self, df):
         n_chunks = (df.height + self.batch_size - 1) // self.batch_size

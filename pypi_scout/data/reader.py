@@ -7,7 +7,7 @@ import polars as pl
 @dataclass
 class DataReader:
     """
-    A class for reading and processing data from a raw PyPi dataset.
+    A class for reading and processing data from a raw PyPI dataset.
     """
 
     raw_dataset: Path

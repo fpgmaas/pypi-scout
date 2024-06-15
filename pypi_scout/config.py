@@ -17,6 +17,10 @@ class Config:
     PROCESSED_DATASET_CSV_NAME = "processed_dataset.csv"
     GOOGLE_FILE_ID = "1huR7-VD3AieBRCcQyRX9MWbPLMb_czjq"
 
+    # The fraction of the dataset to include in the vector database.
+    # Defaults to 0.1, change this to 1.0 to include the entire dataset.
+    FRAC_DATA_TO_INCLUDE = 0.1
+
     def __post_init__(self):
         if not self.PINECONE_TOKEN:
             raise OSError("PINECONE_TOKEN not found in environment variables")  # noqa: TRY003

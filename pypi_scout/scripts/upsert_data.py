@@ -19,6 +19,16 @@ def upsert_data():
     logging.info("Reading the processed dataset...")
     df = pl.read_csv(config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
 
+    if config.FRAC_DATA_TO_INCLUDE < 1.0:
+        logging.info(
+            f"Using only the packages with weekly_downloads in the top {config.FRAC_DATA_TO_INCLUDE * 100}% of the dataset because config.FRAC_DATA_TO_INCLUDE is set to {config.FRAC_DATA_TO_INCLUDE}!"
+        )
+        logging.info(
+            "This can be useful for testing purposes and to quickly get started. To include the entire dataset, set config.FRAC_DATA_TO_INCLUDE to 1.0."
+        )
+        df = df.sort("weekly_downloads", descending=True)
+        df = df.head(round(config.FRAC_DATA_TO_INCLUDE * len(df)))
+
     logging.info("Connecting to the vector database..")
     vector_database_interface = VectorDatabaseInterface(
         pinecone_token=config.PINECONE_TOKEN,

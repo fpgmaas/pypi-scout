@@ -17,6 +17,12 @@ def process_dataset():
     load_dotenv()
     config = Config()
 
+    processed_dataset_path = config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME
+
+    if processed_dataset_path.exists():
+        logging.info("Processed dataset already exists. Skipping the cleaning process.")
+        return
+
     logging.info("Reading the raw dataset...")
     df = DataReader(config.DATA_DIR / config.RAW_DATASET_CSV_NAME).read()
 
@@ -26,7 +32,7 @@ def process_dataset():
     df = df.filter(pl.col("description_cleaned") != CLEANING_FAILED)
 
     logging.info("Storing the processed dataset...")
-    df.write_csv(config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
+    df.write_csv(processed_dataset_path)
     logging.info("Done!")
 
 

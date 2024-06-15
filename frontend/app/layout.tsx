@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PyPi Scout",
-  description: "Find PyPi packages with natural language using LLM's",
+  title: "PyPI Scout",
+  description: "Find PyPI packages with natural language using LLM's",
 };
 
 export default function RootLayout({

@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center justify-start min-h-screen p-4 space-y-4 bg-gray-100">
       <header className="w-full text-center mb-4">
-        <h1 className="text-4xl font-bold p-2 mt-4">✨PyPi Scout</h1>
+        <h1 className="text-4xl font-bold p-2 mt-4">✨PyPI Scout</h1>
         <p className="text-lg text-gray-600">
           Enter your query to search for Python packages
         </p>
