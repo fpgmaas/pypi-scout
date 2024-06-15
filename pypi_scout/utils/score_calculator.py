@@ -1,7 +1,9 @@
 import polars as pl
 
 
-def calculate_score(df: pl.DataFrame, weight_similarity=0.5, weight_weekly_downloads=0.5) -> pl.DataFrame:
+def calculate_score(
+    df: pl.DataFrame, weight_similarity: float = 0.5, weight_weekly_downloads: float = 0.5
+) -> pl.DataFrame:
     """
     Calculate a combined score based on similarity and weekly downloads.
 

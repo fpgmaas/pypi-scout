@@ -59,7 +59,7 @@ There are three methods to run the setup script, dependent on if you have a NVID
 - [Option 3: Using Docker without NVIDIA GPU and NVIDIA Container Toolkit](SETUP.md#option-3-using-docker-without-nvidia-gpu-and-nvidia-container-toolkit)
 
 > [!IMPORTANT]
-> By default only the 10% of the dataset with the most weekly downloads is added to the vector database. This includes all packages with approximately 5.000
+> By default only the 10% of the dataset with the most weekly downloads is added to the vector database. This includes all packages with more than approximately 5.000
 > downloads per week. To also add less popular packages to the dataset, increase the value of `FRAC_DATA_TO_INCLUDE` in `pypi_scout/config.py`.
 
 #### 2. **Run the Application**
@@ -75,5 +75,3 @@ After a short while, your application will be live at [http://localhost:3000](ht
 ## Data
 
 The dataset for this project is created using the [PyPI dataset on Google BigQuery](https://console.cloud.google.com/marketplace/product/gcp-public-data-pypi/pypi?project=regal-net-412415). The SQL query used can be found in [pypi_bigquery.sql](./pypi_bigquery.sql). The resulting dataset is available as a CSV file on [Google Drive](https://drive.google.com/file/d/1huR7-VD3AieBRCcQyRX9MWbPLMb_czjq/view?usp=sharing).
-
-## Acknowledgements
