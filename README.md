@@ -1,10 +1,10 @@
 # ✨PyPi Scout
 
 <video width="820">
-  <source src="./pypi-scout.mp4" type="video/mp4">
+  <source src="./pypi-scout.mov" type="video/mov">
 </video>
 
-![](./pypi-scout.mp4)
+![](./pypi-scout.mov)
 
 PyPi Scout helps you find PyPi packages using natural language prompts powered by Large Language Models (LLMs).
 
