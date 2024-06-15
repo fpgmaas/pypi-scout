@@ -1,9 +1,12 @@
-<p align="center">
+<!-- <p align="center">
   <picture>
     <source srcset="./static/pypi-light.svg" media="(prefers-color-scheme: light)">
     <img alt="pypi-scout logo" width="420" height="200" src="./static/pypi.svg">
   </picture>
-</p>
+</p> -->
+
+# ✨ PyPI Scout
+
 PyPI Scout helps you find PyPI packages through natural language prompts using Large Language Models (LLM's).
 
 ![Demo](./static/demo.gif)
