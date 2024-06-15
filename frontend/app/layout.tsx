@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PyPi LLM Search",
+  title: "PyPi Scout",
   description: "Find PyPi packages with natural language using LLM's",
 };
 
