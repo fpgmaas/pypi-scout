@@ -1,8 +1,8 @@
 # ✨PyPi Scout
 
-![Watch the MOV video](./pypi-scout.mov)
-
-![Watch the WebM video](.pypi-scout.webm)
+<div align="center">
+  <video src="pypi-scout.mp4" width="820" />
+</div>
 
 PyPi Scout helps you find PyPi packages using natural language prompts powered by Large Language Models (LLMs).
 
