@@ -6,9 +6,8 @@ from dotenv import load_dotenv
 from pypi_scout.config import Config
 from pypi_scout.utils.logging import setup_logging
 
-setup_logging()
 
-if __name__ == "__main__":
+def download_dataset():
     """
     Downloads the dataset from a Google Drive link using the gdown library.
     """
@@ -20,3 +19,8 @@ if __name__ == "__main__":
     output = str(config.DATA_DIR / config.RAW_DATASET_CSV_NAME)
     gdown.download(url, output, quiet=False)
     logging.info("Done!")
+
+
+if __name__ == "__main__":
+    setup_logging()
+    download_dataset()

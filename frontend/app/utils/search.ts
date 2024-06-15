@@ -45,8 +45,9 @@ export const sortResults = (
   direction: string,
 ): Match[] => {
   return [...data].sort((a, b) => {
-    if (a[field] < b[field]) return direction === "asc" ? -1 : 1;
-    if (a[field] > b[field]) return direction === "asc" ? 1 : -1;
+    // @ts-ignore
+    if (a[field] < b[field]) return direction === "asc" ? -1 : 1; // @ts-ignore
+    if (a[field] > b[field]) return direction === "asc" ? 1 : -1; // @ts-ignore
     return 0;
   });
 };

@@ -8,9 +8,8 @@ from pypi_scout.config import Config
 from pypi_scout.utils.logging import setup_logging
 from pypi_scout.vector_database import VectorDatabaseInterface
 
-setup_logging()
 
-if __name__ == "__main__":
+def upsert_data():
     """
     Upserts data from a processed dataset CSV into a vector database.
     """
@@ -34,3 +33,8 @@ if __name__ == "__main__":
     )
     vector_database_interface.upsert_polars(df, key_column="name", text_column="summary_and_description_cleaned")
     logging.info("Done!")
+
+
+if __name__ == "__main__":
+    setup_logging()
+    upsert_data()

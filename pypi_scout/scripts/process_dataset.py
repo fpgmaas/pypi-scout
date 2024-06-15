@@ -8,9 +8,8 @@ from pypi_scout.data.description_cleaner import CLEANING_FAILED, DescriptionClea
 from pypi_scout.data.reader import DataReader
 from pypi_scout.utils.logging import setup_logging
 
-setup_logging()
 
-if __name__ == "__main__":
+def process_dataset():
     """
     This script processes a dataset by cleaning the description column and saving the processed dataset as a CSV file.
     """
@@ -29,3 +28,8 @@ if __name__ == "__main__":
     logging.info("Storing the processed dataset...")
     df.write_csv(config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
     logging.info("Done!")
+
+
+if __name__ == "__main__":
+    setup_logging()
+    process_dataset()

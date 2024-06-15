@@ -20,4 +20,4 @@ COPY pypi_scout /code/pypi_scout/
 
 ENV PYTHONPATH=/code
 
-CMD [ "python", "pypi_scout/foo.py"]
+CMD [ "/bin/bash" ]

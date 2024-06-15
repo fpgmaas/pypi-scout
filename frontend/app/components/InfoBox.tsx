@@ -12,8 +12,8 @@ const InfoBox: React.FC<InfoBoxProps> = ({ infoBoxVisible }) => {
       <h2 className="text-2xl font-bold mb-2">How does this work?</h2>
       <p className="text-gray-700">
         This application allows you to search for Python packages on PyPi using
-        natural language. An example query would be "a package that creates
-        plots and beautiful visualizations".
+        natural language. An example query would be &quot;a package that creates
+        plots and beautiful visualizations&quot;.
       </p>
       <br />
       <p className="text-gray-700">
