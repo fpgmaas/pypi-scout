@@ -19,7 +19,7 @@ def setup_pinecone():
     load_dotenv()
     config = Config()
 
-    logging.info("Connecting to Pinecone..")
+    logging.info("🔗 Connecting to Pinecone..")
     pc = Pinecone(api_key=config.PINECONE_TOKEN)
 
     try:
@@ -30,12 +30,12 @@ def setup_pinecone():
             metric="dotproduct",
             spec=ServerlessSpec(cloud="aws", region="us-east-1"),
         )
-        logging.info("Pinecone index created successfully.")
+        logging.info("✅ Pinecone index created successfully.")
     except PineconeApiException as e:
         if e.status == 409:
-            logging.warning(f"Pinecone index '{config.PINECONE_INDEX_NAME}' already exists.")
+            logging.warning(f"✔️  Pinecone index '{config.PINECONE_INDEX_NAME}' already exists.")
         else:
-            logging.exception("An error occurred while creating the Pinecone index.")
+            logging.exception("❌ An error occurred while creating the Pinecone index.")
 
 
 if __name__ == "__main__":

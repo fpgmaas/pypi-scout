@@ -71,7 +71,7 @@ class VectorDatabaseInterface:
         self.index.upsert(vectors=vectors, namespace=self.pinecone_namespace, show_progress=False)
 
     @staticmethod
-    def _split_dataframe_in_batches(self, df: pl.DataFrame, batch_size: int) -> pl.DataFrame:
+    def _split_dataframe_in_batches(df: pl.DataFrame, batch_size: int) -> pl.DataFrame:
         """
         Splits a Polars DataFrame into batches.
         """

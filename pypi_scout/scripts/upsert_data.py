@@ -20,7 +20,7 @@ def upsert_data():
     df = pl.read_csv(config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
     logging.info("Number of rows in the dataset: %s", len(df))
 
-    logging.info("Connecting to the vector database..")
+    logging.info("🔗 Connecting to the vector database..")
     vector_database_interface = VectorDatabaseInterface(
         pinecone_token=config.PINECONE_TOKEN,
         pinecone_index_name=config.PINECONE_INDEX_NAME,
@@ -28,12 +28,14 @@ def upsert_data():
         pinecone_namespace=config.PINECONE_NAMESPACE,
     )
 
-    logging.info("Upserting data into the vector database..")
+    logging.info("⬆️  Upserting data into the vector database..")
+    logging.info("This can take a while...")
+    logging.info("If this really takes too long, consider lowering the value of `FRAC_DATA_TO_INCLUDE` in config.py.")
     df = df.with_columns(
         summary_and_description_cleaned=pl.concat_str(pl.col("summary"), pl.lit(" - "), pl.col("description_cleaned"))
     )
     vector_database_interface.upsert_polars(df, key_column="name", text_column="summary_and_description_cleaned")
-    logging.info("Done!")
+    logging.info("✅ Done!")
 
 
 if __name__ == "__main__":

@@ -10,9 +10,9 @@ from pypi_scout.utils.logging import setup_logging
 
 
 def read_raw_dataset(path_to_raw_dataset):
-    logging.info("Reading the raw dataset...")
+    logging.info("📂 Reading the raw dataset...")
     df = DataReader(path_to_raw_dataset).read()
-    logging.info("Number of rows in the raw dataset: %s", len(df))
+    logging.info("📊 Number of rows in the raw dataset: %s", len(df))
     logging.info(f"The highest weekly downloads in the raw dataset: {df['weekly_downloads'].max():,}")
     logging.info(f"The lowest weekly downloads in the raw dataset: {df['weekly_downloads'].min():,}")
     return df
@@ -28,14 +28,14 @@ def filter_top_packages(df, frac_data_to_include):
     df = df.sort("weekly_downloads", descending=True)
     df = df.head(round(frac_data_to_include * len(df)))
 
-    logging.info(f"Number of rows after filtering: {len(df):,}")
+    logging.info(f"📊 Number of rows after filtering: {len(df):,}")
     logging.info(f"The highest weekly downloads in the filtered dataset: {df['weekly_downloads'].max():,}")
     logging.info(f"The lowest weekly downloads in the filtered dataset: {df['weekly_downloads'].min():,}")
     return df
 
 
 def clean_descriptions(df):
-    logging.info("Cleaning the descriptions...")
+    logging.info("🧹 Cleaning the descriptions...")
     df = DescriptionCleaner().clean(df, "description", "description_cleaned")
     df = df.filter(~pl.col("description_cleaned").is_null())
     df = df.filter(pl.col("description_cleaned") != CLEANING_FAILED)
@@ -45,7 +45,7 @@ def clean_descriptions(df):
 def store_processed_dataset(df, processed_dataset_path):
     logging.info("Storing the processed dataset...")
     df.write_csv(processed_dataset_path)
-    logging.info("Done!")
+    logging.info("✅ Done!")
 
 
 def process_dataset():

@@ -16,13 +16,13 @@ def download_dataset():
 
     target_path = config.DATA_DIR / config.RAW_DATASET_CSV_NAME
     if target_path.exists():
-        logging.info(f"Raw dataset {target_path} from Google Drive already exists! Skipping download.")
+        logging.info(f"✔️  Raw dataset {target_path} from Google Drive already exists! Skipping download.")
         return
 
-    logging.info(f"Downloading raw dataset from Google Drive to {target_path}...")
+    logging.info(f"⬇️ Downloading raw dataset from Google Drive to {target_path}...")
     url = f"https://drive.google.com/uc?id={config.GOOGLE_FILE_ID}"
     gdown.download(url, target_path, quiet=False)
-    logging.info("Done!")
+    logging.info("✅ Done!")
 
 
 if __name__ == "__main__":
