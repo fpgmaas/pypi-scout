@@ -1,7 +1,7 @@
 import logging
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
@@ -71,6 +71,18 @@ async def search(query: QueryModel):
     logging.info(f"Searching for similar projects. Query: '{query.query}'")
     df_matches = vector_database_interface.find_similar(query.query, top_k=query.top_k * 2)
     df_matches = df_matches.join(df, how="left", on="name")
+
+    if df_matches["weekly_downloads"].is_null().any():
+        logging.error(
+            "One or more entries have 'None' for 'weekly_downloads'. "
+            "This means they were found in the vector database but not in the local dataset."
+        )
+        logging.error(
+            "The most likely cause is that the local dataset was generated with a lower config.FRAC_DATA_TO_INCLUDE "
+            "value than the vector database."
+        )
+        logging.error("To solve this, delete the Pinecone index and rerun the setup script.")
+        raise HTTPException(status_code=400, detail="One or more entries have 'None' for 'weekly_downloads'.")
 
     logging.info(
         f"Fetched the {len(df_matches)} most similar projects. Calculating the weighted scores and filtering..."

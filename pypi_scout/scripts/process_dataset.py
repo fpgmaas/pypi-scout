@@ -23,7 +23,7 @@ def filter_top_packages(df, frac_data_to_include):
         f"Using only the packages with weekly_downloads in the top {frac_data_to_include * 100}% of the dataset because config.FRAC_DATA_TO_INCLUDE is set to {frac_data_to_include}!"
     )
     logging.info(
-        "This means packages with low download counts are excluded from the results in the dashboard. To include the entire dataset, set config.FRAC_DATA_TO_INCLUDE to 1.0."
+        "This means packages with low download counts are excluded from the results in the dashboard. To include more data, set config.FRAC_DATA_TO_INCLUDE to a higher value."
     )
     df = df.sort("weekly_downloads", descending=True)
     df = df.head(round(frac_data_to_include * len(df)))

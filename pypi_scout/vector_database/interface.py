@@ -57,7 +57,7 @@ class VectorDatabaseInterface:
         Returns:
             pl.DataFrame: A Polars DataFrame containing the similar vectors and their similarity scores.
         """
-        embeddings = self.model.encode(query, show_progress=False)
+        embeddings = self.model.encode(query, show_progress_bar=False)
         matches = self.index.query(
             namespace=self.pinecone_namespace, vector=embeddings.tolist(), top_k=top_k, include_values=False
         )

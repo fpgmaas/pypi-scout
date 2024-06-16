@@ -56,7 +56,7 @@ There are three methods to run the setup script, dependent on if you have a NVID
 - [Option 3: Using Docker without NVIDIA GPU and NVIDIA Container Toolkit](SETUP.md#option-3-using-docker-without-nvidia-gpu-and-nvidia-container-toolkit)
 
 > [!NOTE]
-> Although the dataset contains all packages on PyPI with more than 50 weekly downloads, by default, only the top 10% of packages with the highest weekly downloads (those with more than approximately 5,000 downloads per week) are added to the vector database. To include less popular packages in the database, you can increase the value of `FRAC_DATA_TO_INCLUDE` in `pypi_scout/config.py`.
+> Although the dataset contains all packages on PyPI with more than 50 weekly downloads, by default only the top 25% of packages with the highest weekly downloads (those with more than approximately 650 downloads per week) are added to the vector database. To include packages with less weekly downloads in the database, you can increase the value of `FRAC_DATA_TO_INCLUDE` in `pypi_scout/config.py`.
 
 #### 2. **Run the Application**
 
