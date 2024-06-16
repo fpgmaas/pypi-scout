@@ -8,15 +8,6 @@ PyPI Scout helps you find PyPI packages through natural language prompts with th
 
 The project works by collecting project summaries and descriptions for all packages on PyPI with more than 50 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to the amount of weekly downloads before presenting the results to the user in a dashboard.
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Architecture](#architecture)
-3. [Getting Started](#getting-started)
-   - [Prerequisites](#prerequisites)
-   - [Build and Setup](#build-and-setup)
-4. [Data](#data)
-
 ## Architecture
 
 The project uses the following technologies:
