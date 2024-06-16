@@ -1,6 +1,6 @@
 # ✨ PyPI Scout
 
-PyPI Scout helps you find PyPI packages through natural language prompts with the help of Large Language Models (LLMs).
+PyPI Scout helps you find PyPI packages through natural language prompts with the help of Sentence Transformers.
 
 ![Demo](./static/demo.gif)
 
