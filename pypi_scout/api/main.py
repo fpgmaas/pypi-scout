@@ -13,6 +13,7 @@ from pypi_scout.utils.score_calculator import calculate_score
 from pypi_scout.vector_database import VectorDatabaseInterface
 
 setup_logging()
+logging.info("Initializing backend...")
 
 app = FastAPI()
 
@@ -71,12 +72,13 @@ async def search(query: QueryModel):
     df_matches = vector_database_interface.find_similar(query.query, top_k=query.top_k * 2)
     df_matches = df_matches.join(df, how="left", on="name")
 
-    logging.info("Found similar projects. Calculating the weighted scores and filtering...")
+    logging.info(
+        f"Fetched the {len(df_matches)} most similar projects. Calculating the weighted scores and filtering..."
+    )
     df_matches = calculate_score(
         df_matches, weight_similarity=config.WEIGHT_SIMILARITY, weight_weekly_downloads=config.WEIGHT_WEEKLY_DOWNLOADS
     )
     df_matches = df_matches.sort("score", descending=True)
     df_matches = df_matches.head(query.top_k)
-
-    logging.info("Returning the results...")
+    logging.info(f"Returning the {len(df_matches)} best matches.")
     return SearchResponse(matches=df_matches.to_dicts())

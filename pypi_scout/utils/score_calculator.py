@@ -5,16 +5,17 @@ def calculate_score(
     df: pl.DataFrame, weight_similarity: float = 0.5, weight_weekly_downloads: float = 0.5
 ) -> pl.DataFrame:
     """
-    Calculate a combined score based on similarity and weekly downloads.
+    Calculate a combined score for packages based on similarity and weekly downloads.
 
-    The function ranks the similarity and weekly downloads, normalizes these ranks to a [0, 1] scale,
-    and then computes a combined score based on the provided weights for similarity and weekly downloads.
-    The DataFrame is sorted by the combined score in descending order.
+     This function ranks the entries according to the 'similarity' and 'weekly_downloads' columns, normalizes these
+     ranks to a [0, 1] scale, and computes a combined score using the provided weights for similarity and weekly downloads.
+     The combined score helps in recommending packages that are both popular and relevant based on similarity.
 
-    Args:
-        df (pl.DataFrame): DataFrame containing 'similarity' and 'weekly_downloads' columns.
-        weight_similarity (float): Weight for the similarity score in the combined score calculation. Default is 0.5.
-        weight_weekly_downloads (float): Weight for the weekly downloads score in the combined score calculation. Default is 0.5.
+
+     Args:
+         df (pl.DataFrame): DataFrame containing 'similarity' and 'weekly_downloads' columns.
+         weight_similarity (float): Weight for the similarity score in the combined score calculation. Default is 0.5.
+         weight_weekly_downloads (float): Weight for the weekly downloads score in the combined score calculation. Default is 0.5.
 
     """
     df = df.with_columns(

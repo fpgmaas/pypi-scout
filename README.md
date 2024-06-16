@@ -4,9 +4,20 @@ PyPI Scout helps you find PyPI packages through natural language prompts with th
 
 ![Demo](./static/demo.gif)
 
+## Overview
+
 The project works by collecting project summaries and descriptions for all packages on PyPI with more than 50 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to the amount of weekly downloads before presenting the results to the user in a dashboard.
 
-## Architecture Overview
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Architecture](#architecture)
+3. [Getting Started](#getting-started)
+   - [Prerequisites](#prerequisites)
+   - [Build and Setup](#build-and-setup)
+4. [Data](#data)
+
+## Architecture
 
 The project uses the following technologies:
 
@@ -23,7 +34,11 @@ The project uses the following technologies:
 
 ### Prerequisites
 
-1. **Create a `.env` File**
+1. **Set Up Pinecone**
+
+   Since PyPI Scout uses [Pinecone](https://www.pinecone.io/) as the vector database, register for a free account on their website. Obtain your API key using the instructions [here](https://docs.pinecone.io/guides/get-started/quickstart).
+
+2. **Create a `.env` File**
 
    Copy the `.env.template` to create a new `.env` file:
 
@@ -31,9 +46,7 @@ The project uses the following technologies:
    cp .env.template .env
    ```
 
-2. **Set Up Pinecone**
-
-   Since PyPI Scout uses [Pinecone](https://www.pinecone.io/) as the vector database, register for a free account on their website. Obtain your API key using the instructions [here](https://docs.pinecone.io/guides/get-started/quickstart) and add it to your `.env` file.
+   Then add your Pinecone API key from step 1 to this file.
 
 ### Build and Setup
 
