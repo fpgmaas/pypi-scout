@@ -1,4 +1,6 @@
-# ✨ PyPI Scout
+<p align="center">
+  <img src="./static/pypi.svg" alt="PyPI Scout Logo" width="200">
+</p>
 
 PyPI Scout helps you find PyPI packages through natural language prompts with the help of Sentence Transformers.
 
