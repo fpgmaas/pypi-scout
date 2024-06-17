@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM python:3.10-slim-buster
+FROM python:3.10-slim-bookworm
 
 ENV POETRY_VERSION=1.6 \
     POETRY_VIRTUALENVS_CREATE=false
@@ -20,4 +20,12 @@ COPY pypi_scout /code/pypi_scout/
 
 ENV PYTHONPATH=/code
 
-CMD [ "/bin/bash" ]
+# Copy the start script and make executable
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Make empty data directory
+RUN mkdir -p /code/data
+
+# Use the script as the entrypoint
+ENTRYPOINT ["/start.sh"]
