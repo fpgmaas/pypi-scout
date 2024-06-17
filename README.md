@@ -8,7 +8,7 @@ Find Python Packages on PyPI packages with the help of vector embeddings .
 
 ## What does this do?
 
-Finding the right Python package on PyPI can be a bit difficult, since it isn't really designed for discovering packages easily. For example, you can search for the word "plot" and get a list of hundreds of packages that contain the word "plot" in seemingly random order.
+Finding the right Python package on [PyPI](https://pypi.org/) can be a bit difficult, since PyPI isn't really designed for discovering packages easily. For example, you can search for the word "plot" and get a list of hundreds of packages that contain the word "plot" in seemingly random order.
 
 Inspired by [this blog post](https://koaning.io/posts/search-boxes/) about finding arXiv articles using vector embeddings, I decided to build a small application that helps you find Python packages with a similar approach. For example, you can ask it "I want to make nice plots and visualizations", and it will provide you with a short list of packages that can help you with that.
 
