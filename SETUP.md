@@ -38,11 +38,12 @@ If you have an NVIDIA GPU and the [NVIDIA Container Toolkit](https://docs.nvidia
 
    ```sh
    docker run --rm \
-     --gpus all \
+      --gpus all \
      --env-file .env \
      -v $(pwd)/data:/code/data \
+     --entrypoint "/bin/bash" \
      pypi-scout \
-     python /code/pypi_scout/scripts/setup.py
+     -c "python /code/pypi_scout/scripts/setup.py"
    ```
 
 ### Option 3: Using Docker without NVIDIA GPU and NVIDIA Container Toolkit
@@ -61,8 +62,9 @@ If you do not have an NVIDIA GPU or the NVIDIA Container Toolkit installed, foll
    docker run --rm \
      --env-file .env \
      -v $(pwd)/data:/code/data \
+     --entrypoint "/bin/bash" \
      pypi-scout \
-     python /code/pypi_scout/scripts/setup.py
+     -c "python /code/pypi_scout/scripts/setup.py"
    ```
 
 ### Running the Application
