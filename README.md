@@ -2,7 +2,7 @@
   <img src="./static/pypi.svg" alt="PyPI Scout Logo" width="200">
 </p>
 
-Find Python Packages on PyPI packages with the help of vector embeddings .
+Find Python Packages on PyPI packages with the help of vector embeddings.
 
 ![Demo](./static/demo.gif)
 
