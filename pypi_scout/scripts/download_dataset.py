@@ -21,7 +21,7 @@ def download_dataset():
 
     logging.info(f"⬇️ Downloading raw dataset from Google Drive to {target_path}...")
     url = f"https://drive.google.com/uc?id={config.GOOGLE_FILE_ID}"
-    gdown.download(url, target_path, quiet=False)
+    gdown.download(url, str(target_path), quiet=False)
     logging.info("✅ Done!")
 
 
