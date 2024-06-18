@@ -15,16 +15,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /code
 
 # Copy only requirements to cache them in docker layer
-COPY pyproject.toml poetry.lock /code/
-
-# Install pip-tools to compile requirements from pyproject.toml
-RUN pip install pip-tools
-
-# Create requirements.txt from pyproject.toml
-RUN pip-compile pyproject.toml --output-file=requirements.txt
+COPY requirements-cpu.txt /code/requirements-cpu.txt
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements-cpu.txt
 
 # Copy the rest of the application code
 COPY pypi_scout /code/pypi_scout/

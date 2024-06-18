@@ -1,8 +1,0 @@
-# Exclude all files
-**
-
-# Include only necessary directories and files
-!pypi_scout/
-!poetry.lock
-!pyproject.toml
-!start.sh
