@@ -53,7 +53,7 @@ If you do not have an NVIDIA GPU or the NVIDIA Container Toolkit installed, foll
 1. Build the Docker image:
 
    ```sh
-   docker build -t pypi-scout .
+   docker build -f DockerfileCPU -t pypi-scout .
    ```
 
 2. Run the setup script in a Docker container without GPU support:

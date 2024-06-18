@@ -1,3 +1,5 @@
+# This file is used in DockerfileCPU. It installs torch without GPU support and without the NVIDIA package.
+# This disables GPU support in the container, but reduces the size drastically (multiple GB's.)
 beautifulsoup4==4.12.3
 polars==0.20.31
 sentence-transformers==3.0.1
