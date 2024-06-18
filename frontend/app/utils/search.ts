@@ -7,7 +7,7 @@ interface Match {
   summary: string;
 }
 
-const apiUrl = process.env.API_URL;
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const handleSearch = async (
   query: string,
