@@ -37,3 +37,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: pypiscoutacr.azurecr.io/pypi-scout-frontend:latest
+          build-args: |
+            NEXT_PUBLIC_API_URL=http://backend-service:8000
