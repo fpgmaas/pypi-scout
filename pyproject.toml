@@ -38,23 +38,6 @@ mkdocs = "^1.4.2"
 mkdocs-material = "^9.2.7"
 mkdocstrings = {extras = ["python"], version = "^0.23.0"}
 
-[tool.poetry.group.gpu.dependencies]
-torch = {version = "^2.0.1+cu118", source = "pytorch-gpu-src"}
-
-[tool.poetry.group.cpu.dependencies]
-torch = {version = "^2.0.1+cu118", source = "pytorch-cpu"}
-
-[[tool.poetry.source]]
-name = "pytorch-gpu-src"
-url = "https://download.pytorch.org/whl/cu118"
-priority = "explicit"
-
-
-[[tool.poetry.source]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-priority = "explicit"
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
