@@ -22,6 +22,7 @@ config = Config()
 
 origins = [
     "http://localhost:3000",
+    "http://frontend-service:3000",
 ]
 
 app.add_middleware(

@@ -7,6 +7,8 @@ interface Match {
   summary: string;
 }
 
+const apiUrl = process.env.API_URL;
+
 export const handleSearch = async (
   query: string,
   sortField: string,
@@ -19,7 +21,7 @@ export const handleSearch = async (
   setError("");
   try {
     const response = await axios.post(
-      "http://localhost:8000/search",
+      `${apiUrl}/search`,
       {
         query: query,
       },
@@ -45,9 +47,8 @@ export const sortResults = (
   direction: string,
 ): Match[] => {
   return [...data].sort((a, b) => {
-    // @ts-ignore
-    if (a[field] < b[field]) return direction === "asc" ? -1 : 1; // @ts-ignore
-    if (a[field] > b[field]) return direction === "asc" ? 1 : -1; // @ts-ignore
+    if (a[field] < b[field]) return direction === "asc" ? -1 : 1;
+    if (a[field] > b[field]) return direction === "asc" ? 1 : -1;
     return 0;
   });
 };
