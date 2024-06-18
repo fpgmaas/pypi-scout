@@ -30,5 +30,7 @@ RUN chmod +x /start.sh
 # Make empty data directory
 RUN mkdir -p /code/data
 
+ENV PYTHONPATH=/code
+
 # Use the script as the entrypoint
 ENTRYPOINT ["/start.sh"]
