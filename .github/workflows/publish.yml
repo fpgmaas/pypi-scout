@@ -38,4 +38,4 @@ jobs:
           push: true
           tags: pypiscoutacr.azurecr.io/pypi-scout-frontend:latest
           build-args: |
-            NEXT_PUBLIC_API_URL=http://backend-service:8000
+            NEXT_PUBLIC_API_URL=http://nginx-service/api
