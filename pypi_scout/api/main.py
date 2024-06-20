@@ -20,11 +20,6 @@ app = FastAPI()
 load_dotenv()
 config = Config()
 
-origins = [
-    "http://localhost:3000",
-    "http://frontend-service:3000",
-]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Temporary wildcard for testing
@@ -61,7 +56,7 @@ class SearchResponse(BaseModel):
     matches: list[Match]
 
 
-@app.post("/search/", response_model=SearchResponse)
+@app.post("/api/search/", response_model=SearchResponse)
 async def search(query: QueryModel):
     """
     Search for the packages whose summary and description have the highest similarity to the query.
