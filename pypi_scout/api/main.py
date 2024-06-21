@@ -28,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-df = load_dataset(config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
+df = load_dataset(config)
 
 model = SentenceTransformer(config.EMBEDDINGS_MODEL_NAME)
 

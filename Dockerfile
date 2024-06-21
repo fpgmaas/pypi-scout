@@ -22,14 +22,10 @@ RUN poetry install --no-interaction --no-ansi --no-root --no-dev && \
 # Copy Python code to the Docker image
 COPY pypi_scout /code/pypi_scout/
 
-# Copy the start script and make executable
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
 # Make empty data directory
 RUN mkdir -p /code/data
 
 ENV PYTHONPATH=/code
 
 # Use the script as the entrypoint
-ENTRYPOINT ["/start.sh"]
+CMD ["uvicorn", "pypi_scout.api.main:app", "--host", "0.0.0.0", "--port", "8000"]

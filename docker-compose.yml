@@ -5,11 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: uvicorn pypi_scout.api.main:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
     volumes:
-      - ./data:/data
+      - ./data:/code/data
     env_file:
       - .env
 
@@ -18,7 +17,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:8000
+        NEXT_PUBLIC_API_URL: http://localhost:8000/api
     ports:
       - "3000:3000"
     depends_on:

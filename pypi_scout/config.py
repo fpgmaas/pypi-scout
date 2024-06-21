@@ -27,6 +27,9 @@ class Config:
     # Dimension of the vector embeddings produced by the model. Should match the output of the model above.
     EMBEDDINGS_DIMENSION = 768
 
+    # Boolean to overwrite existing files. e.g. re-download the raw dataset, upload processed dataset to blob, etc.
+    OVERWRITE: bool = True
+
     # Directory where dataset files are stored.
     DATA_DIR: Path = Path("data")
 
@@ -53,7 +56,10 @@ class Config:
     WEIGHT_SIMILARITY = 0.8
     WEIGHT_WEEKLY_DOWNLOADS = 0.2
 
-    # Storage backend
+    # Storage backend configuration. Can be either StorageBackend.LOCAL or StorageBackend.BLOB.
+    # If StorageBackend.BLOB, the processed dataset will be uploaded to Blob, and the backend API
+    # will read the data from there, rather than from a local data directory. In order to use StorageBackend.BLOB,
+    # the other `STORAGE_BACKEND_BLOB_` variables need to be set as environment variables.
     STORAGE_BACKEND: StorageBackend = StorageBackend.LOCAL
     STORAGE_BACKEND_BLOB_ACCOUNT_NAME: str | None = None
     STORAGE_BACKEND_BLOB_CONTAINER_NAME: str | None = None
@@ -76,4 +82,4 @@ class Config:
                     self.STORAGE_BACKEND_BLOB_KEY,
                 ]
             ):
-                raise OSError("One or more BLOB storage environment variables are missing!")
+                raise OSError("One or more BLOB storage environment variables are missing!")  # noqa: TRY003

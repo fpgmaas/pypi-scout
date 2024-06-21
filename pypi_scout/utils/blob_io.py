@@ -1,3 +1,4 @@
+import tempfile
 from io import BytesIO
 
 import polars as pl
@@ -29,9 +30,17 @@ class BlobIO:
     def download_csv(self, blob_name: str) -> pl.DataFrame:
         blob_client = self.container_client.get_blob_client(blob_name)
         download_stream = blob_client.download_blob()
-        csv_content = download_stream.content_as_text()
-        csv_buffer = StringIO(csv_content)
-        return pl.read_csv(csv_buffer)
+
+        # Create a temporary file
+        with tempfile.NamedTemporaryFile(delete=True) as temp_file:
+            # Download the blob content into the temporary file
+            temp_file.write(download_stream.readall())
+            temp_file.flush()
+
+            # Read the CSV using Polars
+            df = pl.read_csv(temp_file.name)
+
+        return df
 
     def exists(self, blob_name):
         blob_client = self.container_client.get_blob_client(blob_name)
