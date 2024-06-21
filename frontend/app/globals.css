@@ -6,8 +6,8 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  --dark-bg-start-rgb: 10, 10, 35; /* Very dark blue almost grey */
-  --dark-bg-end-rgb: 25, 25, 50; /* Dark blue */
+  --dark-bg-start-rgb: 17, 24, 39; /* Dark gray (bg-gray-900) */
+  --dark-bg-end-rgb: 17, 24, 39; /* Dark gray (bg-gray-900) */
   --dark-foreground-rgb: 255, 255, 255;
 }
 
@@ -21,12 +21,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(var(--background-start-rgb)); /* Solid background color */
 }
 
 @layer utilities {
