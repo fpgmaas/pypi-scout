@@ -1,6 +1,12 @@
 import os
 from dataclasses import dataclass, field
+from enum import Enum
 from pathlib import Path
+
+
+class StorageBackend(Enum):
+    LOCAL = "LOCAL"
+    BLOB = "BLOB"
 
 
 @dataclass
@@ -47,6 +53,27 @@ class Config:
     WEIGHT_SIMILARITY = 0.8
     WEIGHT_WEEKLY_DOWNLOADS = 0.2
 
+    # Storage backend
+    STORAGE_BACKEND: StorageBackend = StorageBackend.LOCAL
+    STORAGE_BACKEND_BLOB_ACCOUNT_NAME: str | None = None
+    STORAGE_BACKEND_BLOB_CONTAINER_NAME: str | None = None
+    STORAGE_BACKEND_BLOB_KEY: str | None = None
+
     def __post_init__(self) -> None:
         if not self.PINECONE_TOKEN:
             raise OSError("PINECONE_TOKEN not found in environment variables")  # noqa: TRY003
+
+        if os.getenv("STORAGE_BACKEND") == "BLOB":
+            self.STORAGE_BACKEND = StorageBackend.BLOB
+            self.STORAGE_BACKEND_BLOB_ACCOUNT_NAME = os.getenv("STORAGE_BACKEND_BLOB_ACCOUNT_NAME")
+            self.STORAGE_BACKEND_BLOB_CONTAINER_NAME = os.getenv("STORAGE_BACKEND_BLOB_CONTAINER_NAME")
+            self.STORAGE_BACKEND_BLOB_KEY = os.getenv("STORAGE_BACKEND_BLOB_KEY")
+
+            if not all(
+                [
+                    self.STORAGE_BACKEND_BLOB_ACCOUNT_NAME,
+                    self.STORAGE_BACKEND_BLOB_CONTAINER_NAME,
+                    self.STORAGE_BACKEND_BLOB_KEY,
+                ]
+            ):
+                raise OSError("One or more BLOB storage environment variables are missing!")
