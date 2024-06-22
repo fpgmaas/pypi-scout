@@ -7,6 +7,12 @@ interface Match {
   summary: string;
 }
 
+interface SearchResponse {
+  matches: Match[];
+  warning?: boolean;
+  warning_message?: string;
+}
+
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export const handleSearch = async (
@@ -20,7 +26,7 @@ export const handleSearch = async (
   setLoading(true);
   setError("");
   try {
-    const response = await axios.post(
+    const response = await axios.post<SearchResponse>(
       `${apiUrl}/search`,
       {
         query: query,
@@ -31,8 +37,14 @@ export const handleSearch = async (
         },
       },
     );
-    const fetchedResults: Match[] = response.data.matches;
-    setResults(sortResults(fetchedResults, sortField, sortDirection));
+
+    const { matches, warning, warning_message } = response.data;
+
+    if (warning && warning_message) {
+      console.warn("Warning from API:", warning_message);
+    }
+
+    setResults(sortResults(matches, sortField, sortDirection));
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 429) {
       setError("Rate limit reached. Please wait a minute and try again.");

@@ -18,8 +18,9 @@ const InfoBox: React.FC<InfoBoxProps> = ({ infoBoxVisible }) => {
       <br />
       <p className="text-gray-300">
         Once you click search, your query will be matched against the summary
-        and the first part of the description of all PyPI packages with more
-        than 50 weekly downloads. The results are then scored based on their
+        and the first part of the description of the ~30.000 most popular
+        packages on PyPI, which roughly corresponds to all packages with more
+        than 600 downloads per week. The results are then scored based on their
         similarity and their number of weekly downloads, and the best results
         are displayed in the table below.
       </p>

@@ -17,17 +17,21 @@ from pypi_scout.utils.logging import setup_logging
 from pypi_scout.utils.score_calculator import calculate_score
 from pypi_scout.vector_database import VectorDatabaseInterface
 
+# Setup logging
 setup_logging()
 logging.info("Initializing backend...")
 
+# Initialize limiter
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+# Load environment variables and configuration
 load_dotenv()
 config = Config()
 
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Temporary wildcard for testing
@@ -36,8 +40,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Load dataset and initialize model and vector database interface
 df = load_dataset(config)
-
 model = SentenceTransformer(config.EMBEDDINGS_MODEL_NAME)
 
 vector_database_interface = VectorDatabaseInterface(
@@ -62,6 +66,8 @@ class Match(BaseModel):
 
 class SearchResponse(BaseModel):
     matches: list[Match]
+    warning: bool = False
+    warning_message: str = None
 
 
 @app.post("/api/search", response_model=SearchResponse)
@@ -73,7 +79,7 @@ async def search(query: QueryModel, request: Request):
     The top_k packages with the highest score are returned.
     """
 
-    if query.top_k > 100:
+    if query.top_k > 60:
         raise HTTPException(status_code=400, detail="top_k cannot be larger than 100.")
 
     logging.info(f"Searching for similar projects. Query: '{query.query}'")
@@ -83,26 +89,26 @@ async def search(query: QueryModel, request: Request):
         f"Fetched the {len(df_matches)} most similar projects. Calculating the weighted scores and filtering..."
     )
 
+    warning = False
+    warning_message = ""
     matches_missing_in_local_dataset = df_matches.filter(pl.col("weekly_downloads").is_null())["name"].to_list()
     if matches_missing_in_local_dataset:
-        logging.error(
-            f"The following entries have 'None' for 'weekly_downloads': {matches_missing_in_local_dataset} "
-            "This means they were found in the vector database but not in the local dataset."
+        warning = True
+        warning_message = (
+            f"The following entries have 'None' for 'weekly_downloads': {matches_missing_in_local_dataset}. "
+            "These entries were found in the vector database but not in the local dataset and have been excluded from the results."
         )
-        logging.error(
-            "The most likely cause is that the local dataset was generated with a lower config.FRAC_DATA_TO_INCLUDE "
-            "value than the vector database."
-        )
-        logging.error("To solve this, delete the Pinecone index and rerun the setup script.")
-        raise HTTPException(
-            status_code=400,
-            detail=f"The packages {matches_missing_in_local_dataset} are available in Pinecone but not in the local dataset.",
-        )
+        logging.error(warning_message)
+        df_matches = df_matches.filter(~pl.col("name").is_in(matches_missing_in_local_dataset))
 
     df_matches = calculate_score(
         df_matches, weight_similarity=config.WEIGHT_SIMILARITY, weight_weekly_downloads=config.WEIGHT_WEEKLY_DOWNLOADS
     )
     df_matches = df_matches.sort("score", descending=True)
-    df_matches = df_matches.head(query.top_k)
+
+    if len(df_matches) > query.top_k:
+        df_matches = df_matches.head(query.top_k)
+
     logging.info(f"Returning the {len(df_matches)} best matches.")
-    return SearchResponse(matches=df_matches.to_dicts())
+
+    return SearchResponse(matches=df_matches.to_dicts(), warning=warning, warning_message=warning_message)
