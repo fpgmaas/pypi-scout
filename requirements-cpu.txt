@@ -14,5 +14,7 @@ gdown==5.2.0
 torch==2.0.1
 numpy==1.24.4
 azure-storage-blob==12.20.0
+slowapi=0.1.9
+starlette==0.37.2
 --index-url=https://download.pytorch.org/whl/cpu
 --extra-index-url=https://pypi.org/simple
