@@ -39,6 +39,10 @@ class Config:
     # Filename for the processed dataset CSV.
     PROCESSED_DATASET_CSV_NAME = "processed_dataset.csv"
 
+    # Filename for the dataset that contains the minimal data that the API needs.
+    # For example; it needs the name, weekly downloads, and the summary, but not the (cleaned) description.
+    DATASET_FOR_API_CSV_NAME = "dataset_for_api.csv"
+
     # Google Drive file ID for downloading the raw dataset.
     GOOGLE_FILE_ID = "1huR7-VD3AieBRCcQyRX9MWbPLMb_czjq"
 

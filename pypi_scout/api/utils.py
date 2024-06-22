@@ -8,7 +8,7 @@ from pypi_scout.utils.blob_io import BlobIO
 
 
 def load_dataset(config: Config) -> pl.DataFrame:
-    dataset_path = config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME
+    dataset_path = config.DATA_DIR / config.DATASET_FOR_API_CSV_NAME
 
     if dataset_path.exists():
         logging.info(f"Found local dataset. Reading dataset from `{dataset_path}`...")
@@ -16,14 +16,14 @@ def load_dataset(config: Config) -> pl.DataFrame:
 
     elif config.STORAGE_BACKEND == StorageBackend.BLOB:
         logging.info(
-            f"Downloading `{config.PROCESSED_DATASET_CSV_NAME}` from container `{config.STORAGE_BACKEND_BLOB_CONTAINER_NAME}`..."
+            f"Downloading `{config.DATASET_FOR_API_CSV_NAME}` from container `{config.STORAGE_BACKEND_BLOB_CONTAINER_NAME}`..."
         )
         blob_io = BlobIO(
             config.STORAGE_BACKEND_BLOB_ACCOUNT_NAME,
             config.STORAGE_BACKEND_BLOB_CONTAINER_NAME,
             config.STORAGE_BACKEND_BLOB_KEY,
         )
-        df = blob_io.download_csv(config.PROCESSED_DATASET_CSV_NAME)
+        df = blob_io.download_csv(config.DATASET_FOR_API_CSV_NAME)
         logging.info("Finished downloading.")
 
     else:

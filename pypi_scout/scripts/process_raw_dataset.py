@@ -12,7 +12,7 @@ from pypi_scout.utils.logging import setup_logging
 def read_raw_dataset(path_to_raw_dataset):
     logging.info("📂 Reading the raw dataset...")
     df = RawDataReader(path_to_raw_dataset).read()
-    logging.info("📊 Number of rows in the raw dataset: %s", len(df))
+    logging.info(f"📊 Number of rows in the raw dataset: {len(df):,}")
     logging.info(f"The highest weekly downloads in the raw dataset: {df['weekly_downloads'].max():,}")
     logging.info(f"The lowest weekly downloads in the raw dataset: {df['weekly_downloads'].min():,}")
     return df
@@ -42,8 +42,8 @@ def clean_descriptions(df):
     return df
 
 
-def store_processed_dataset(df, processed_dataset_path):
-    logging.info("Storing the processed dataset...")
+def write_csv(df, processed_dataset_path):
+    logging.info(f"Storing dataset in {processed_dataset_path}...")
     df.write_csv(processed_dataset_path)
     logging.info("✅ Done!")
 
@@ -55,7 +55,9 @@ def process_raw_dataset():
     if config.FRAC_DATA_TO_INCLUDE < 1.0:
         df = filter_top_packages(df, config.FRAC_DATA_TO_INCLUDE)
     df = clean_descriptions(df)
-    store_processed_dataset(df, config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
+
+    write_csv(df, config.DATA_DIR / config.PROCESSED_DATASET_CSV_NAME)
+    write_csv(df.select(["name", "summary", "weekly_downloads"]), config.DATA_DIR / config.DATASET_FOR_API_CSV_NAME)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import logging
 from pypi_scout.scripts.download_raw_dataset import download_raw_dataset
 from pypi_scout.scripts.process_raw_dataset import process_raw_dataset
 from pypi_scout.scripts.setup_pinecone import setup_pinecone
-from pypi_scout.scripts.upload_processed_dataset import upload_processed_dataset
+from pypi_scout.scripts.upload_processed_datasets import upload_processed_datasets
 from pypi_scout.scripts.upsert_data import upsert_data
 from pypi_scout.utils.logging import setup_logging
 
@@ -21,8 +21,8 @@ def main(no_upsert):
     logging.info("\n\nPROCESSING RAW DATASET -------------\n")
     process_raw_dataset()
 
-    logging.info("\n\nUPLOADING PROCESSED DATASET -------------\n")
-    upload_processed_dataset()
+    logging.info("\n\nUPLOADING PROCESSED DATASETS -------------\n")
+    upload_processed_datasets()
     if not no_upsert:
         logging.info("\n\nUPSERTING DATA TO PINECONE -------------\n")
         upsert_data()
