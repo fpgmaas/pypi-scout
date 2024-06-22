@@ -32,6 +32,7 @@ class VectorDatabaseInterface:
         pc = Pinecone(api_key=pinecone_token)
         self.index = pc.Index(pinecone_index_name)
         self.pinecone_namespace = pinecone_namespace
+        logging.info("Connection successful.")
 
     def upsert_polars(self, df: pl.DataFrame, key_column: str, text_column: str):
         """

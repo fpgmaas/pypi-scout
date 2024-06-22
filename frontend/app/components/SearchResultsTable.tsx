@@ -25,6 +25,12 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
     return sortField === field ? (sortDirection === "asc" ? "▲" : "▼") : "";
   };
 
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength
+      ? `${text.substring(0, maxLength)}...`
+      : text;
+  };
+
   return (
     <div className="overflow-x-auto w-full">
       <table className="min-w-full divide-y divide-gray-700">
@@ -70,7 +76,7 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
           {results.map((result, index) => (
             <tr key={index} className="hover:bg-gray-700">
               <td className="px-4 py-2 whitespace-nowrap text-gray-200">
-                {result.name}
+                {truncateText(result.name, 20)}
               </td>
               <td className="px-4 py-2 whitespace-nowrap text-gray-200">
                 {result.similarity.toFixed(3)}
@@ -78,7 +84,7 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
               <td className="px-4 py-2 whitespace-nowrap text-gray-200">
                 {result.weekly_downloads.toLocaleString()}
               </td>
-              <td className="px-4 py-2 whitespace-normal break-words text-gray-200">
+              <td className="px-4 py-2 whitespace-normal break-words text-gray-200 min-w-[400px]">
                 {result.summary}
               </td>
               <td className="px-4 py-2 whitespace-nowrap">

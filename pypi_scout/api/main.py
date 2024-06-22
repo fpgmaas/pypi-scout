@@ -1,10 +1,15 @@
 import logging
 
+import polars as pl
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sentence_transformers import SentenceTransformer
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
+from starlette.requests import Request
 
 from pypi_scout.api.utils import load_dataset
 from pypi_scout.config import Config
@@ -15,7 +20,10 @@ from pypi_scout.vector_database import VectorDatabaseInterface
 setup_logging()
 logging.info("Initializing backend...")
 
+limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 load_dotenv()
 config = Config()
@@ -56,21 +64,29 @@ class SearchResponse(BaseModel):
     matches: list[Match]
 
 
-@app.post("/api/search/", response_model=SearchResponse)
-async def search(query: QueryModel):
+@app.post("/api/search", response_model=SearchResponse)
+@limiter.limit("4/minute")
+async def search(query: QueryModel, request: Request):
     """
     Search for the packages whose summary and description have the highest similarity to the query.
     We take the top_k * 2 most similar packages, and then calculate weighted score based on the similarity and weekly downloads.
     The top_k packages with the highest score are returned.
     """
 
+    if query.top_k > 100:
+        raise HTTPException(status_code=400, detail="top_k cannot be larger than 100.")
+
     logging.info(f"Searching for similar projects. Query: '{query.query}'")
     df_matches = vector_database_interface.find_similar(query.query, top_k=query.top_k * 2)
     df_matches = df_matches.join(df, how="left", on="name")
+    logging.info(
+        f"Fetched the {len(df_matches)} most similar projects. Calculating the weighted scores and filtering..."
+    )
 
-    if df_matches["weekly_downloads"].is_null().any():
+    matches_missing_in_local_dataset = df_matches.filter(pl.col("weekly_downloads").is_null())["name"].to_list()
+    if matches_missing_in_local_dataset:
         logging.error(
-            "One or more entries have 'None' for 'weekly_downloads'. "
+            f"The following entries have 'None' for 'weekly_downloads': {matches_missing_in_local_dataset} "
             "This means they were found in the vector database but not in the local dataset."
         )
         logging.error(
@@ -78,11 +94,11 @@ async def search(query: QueryModel):
             "value than the vector database."
         )
         logging.error("To solve this, delete the Pinecone index and rerun the setup script.")
-        raise HTTPException(status_code=400, detail="One or more entries have 'None' for 'weekly_downloads'.")
+        raise HTTPException(
+            status_code=400,
+            detail=f"The packages {matches_missing_in_local_dataset} are available in Pinecone but not in the local dataset.",
+        )
 
-    logging.info(
-        f"Fetched the {len(df_matches)} most similar projects. Calculating the weighted scores and filtering..."
-    )
     df_matches = calculate_score(
         df_matches, weight_similarity=config.WEIGHT_SIMILARITY, weight_weekly_downloads=config.WEIGHT_WEEKLY_DOWNLOADS
     )

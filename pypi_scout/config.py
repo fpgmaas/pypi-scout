@@ -53,8 +53,8 @@ class Config:
     # Weights for the combined score calculation. Higher WEIGHT_SIMILARITY prioritizes
     # relevance based on text similarity, while higher WEIGHT_WEEKLY_DOWNLOADS prioritizes
     # packages with more weekly downloads.
-    WEIGHT_SIMILARITY = 0.8
-    WEIGHT_WEEKLY_DOWNLOADS = 0.2
+    WEIGHT_SIMILARITY = 0.6
+    WEIGHT_WEEKLY_DOWNLOADS = 0.4
 
     # Storage backend configuration. Can be either StorageBackend.LOCAL or StorageBackend.BLOB.
     # If StorageBackend.BLOB, the processed dataset will be uploaded to Blob, and the backend API

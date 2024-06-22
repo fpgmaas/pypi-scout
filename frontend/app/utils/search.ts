@@ -34,7 +34,11 @@ export const handleSearch = async (
     const fetchedResults: Match[] = response.data.matches;
     setResults(sortResults(fetchedResults, sortField, sortDirection));
   } catch (error) {
-    setError("Error fetching search results.");
+    if (axios.isAxiosError(error) && error.response?.status === 429) {
+      setError("Rate limit reached. Please wait a minute and try again.");
+    } else {
+      setError("Error fetching search results.");
+    }
     console.error("Error fetching search results:", error);
   } finally {
     setLoading(false);
@@ -48,8 +52,9 @@ export const sortResults = (
 ): Match[] => {
   return [...data].sort((a, b) => {
     // @ts-ignore
-    if (a[field] < b[field]) return direction === "asc" ? -1 : 1; // @ts-ignore
-    if (a[field] > b[field]) return direction === "asc" ? 1 : -1; // @ts-ignore
+    if (a[field] < b[field]) return direction === "asc" ? -1 : 1;
+    // @ts-ignore
+    if (a[field] > b[field]) return direction === "asc" ? 1 : -1;
     return 0;
   });
 };
