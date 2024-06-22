@@ -33,7 +33,7 @@ def setup_pinecone():
         logging.info("✅ Pinecone index created successfully.")
     except PineconeApiException as e:
         if e.status == 409:
-            logging.warning(f"✔️  Pinecone index '{config.PINECONE_INDEX_NAME}' already exists.")
+            logging.warning(f"🔹 Pinecone index '{config.PINECONE_INDEX_NAME}' already exists.")
         else:
             logging.exception("❌ An error occurred while creating the Pinecone index.")
 

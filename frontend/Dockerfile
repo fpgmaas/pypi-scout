@@ -13,6 +13,12 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
+# Build argument to accept the API URL during build time
+ARG NEXT_PUBLIC_API_URL
+
+# Set environment variable within the container
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 # Build the Next.js application
 RUN npm run build
 

@@ -7,6 +7,14 @@ interface Match {
   summary: string;
 }
 
+interface SearchResponse {
+  matches: Match[];
+  warning?: boolean;
+  warning_message?: string;
+}
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export const handleSearch = async (
   query: string,
   sortField: string,
@@ -18,8 +26,8 @@ export const handleSearch = async (
   setLoading(true);
   setError("");
   try {
-    const response = await axios.post(
-      "http://localhost:8000/search",
+    const response = await axios.post<SearchResponse>(
+      `${apiUrl}/search`,
       {
         query: query,
       },
@@ -29,10 +37,20 @@ export const handleSearch = async (
         },
       },
     );
-    const fetchedResults: Match[] = response.data.matches;
-    setResults(sortResults(fetchedResults, sortField, sortDirection));
+
+    const { matches, warning, warning_message } = response.data;
+
+    if (warning && warning_message) {
+      console.warn("Warning from API:", warning_message);
+    }
+
+    setResults(sortResults(matches, sortField, sortDirection));
   } catch (error) {
-    setError("Error fetching search results.");
+    if (axios.isAxiosError(error) && error.response?.status === 429) {
+      setError("Rate limit reached. Please wait a minute and try again.");
+    } else {
+      setError("Error fetching search results.");
+    }
     console.error("Error fetching search results:", error);
   } finally {
     setLoading(false);
@@ -46,8 +64,9 @@ export const sortResults = (
 ): Match[] => {
   return [...data].sort((a, b) => {
     // @ts-ignore
-    if (a[field] < b[field]) return direction === "asc" ? -1 : 1; // @ts-ignore
-    if (a[field] > b[field]) return direction === "asc" ? 1 : -1; // @ts-ignore
+    if (a[field] < b[field]) return direction === "asc" ? -1 : 1;
+    // @ts-ignore
+    if (a[field] > b[field]) return direction === "asc" ? 1 : -1;
     return 0;
   });
 };

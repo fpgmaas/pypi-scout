@@ -7,7 +7,7 @@ from pypi_scout.config import Config
 from pypi_scout.utils.logging import setup_logging
 
 
-def download_dataset():
+def download_raw_dataset():
     """
     Downloads the dataset from a Google Drive link using the gdown library.
     """
@@ -16,8 +16,13 @@ def download_dataset():
 
     target_path = config.DATA_DIR / config.RAW_DATASET_CSV_NAME
     if target_path.exists():
-        logging.info(f"✔️  Raw dataset {target_path} from Google Drive already exists! Skipping download.")
-        return
+        if not config.OVERWRITE:
+            logging.info(f"🔹 Raw dataset {target_path} from Google Drive already exists! Skipping download.")
+            return
+        else:
+            logging.info(
+                f"⤵️  Raw dataset {target_path} from Google Drive exists, but config.OVERWRITE is `true`. Overwriting..."
+            )
 
     logging.info(f"⬇️ Downloading raw dataset from Google Drive to {target_path}...")
     url = f"https://drive.google.com/uc?id={config.GOOGLE_FILE_ID}"
@@ -27,4 +32,4 @@ def download_dataset():
 
 if __name__ == "__main__":
     setup_logging()
-    download_dataset()
+    download_raw_dataset()
