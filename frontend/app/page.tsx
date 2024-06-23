@@ -45,6 +45,9 @@ export default function Home() {
               className="mx-auto"
             ></img>
           </picture>
+          <p className="text-gray-100 text-xl ">
+            Find packages on PyPI with natural language queries
+          </p>
         </div>
 
         <div className="flex flex-col items-center space-y-4 w-full max-w-5xl bg-sky-900 p-6 rounded-lg shadow-lg">
@@ -52,7 +55,7 @@ export default function Home() {
             className="placeholder-gray-400 w-full h-24 p-2 border border-sky-900 rounded resize-none overflow-auto focus:outline-none focus:ring-2 focus:ring-sky-800 bg-white text-sky-950"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Enter your query here..."
+            placeholder="Describe what you are looking for... "
           ></textarea>
           <button
             className="w-full max-w-[250px] p-2 border border-sky-900 rounded bg-sky-950 text-white hover:bg-sky-700 hover:outline-none hover:ring-1 hover:ring-sky-700"
