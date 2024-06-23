@@ -44,7 +44,7 @@ class Config:
     # Fraction of the dataset to include in the vector database. This value determines the portion of top packages
     # (sorted by weekly downloads) to include. Increase this value to include a larger portion of the dataset, up to 1.0 (100%).
     # For reference, a value of 0.25 corresponds to including all PyPI packages with at least approximately 650 weekly downloads
-    FRAC_DATA_TO_INCLUDE = 0.4
+    FRAC_DATA_TO_INCLUDE = 1
 
     # Weights for the combined score calculation. Higher WEIGHT_SIMILARITY prioritizes
     # relevance based on text similarity, while higher WEIGHT_WEEKLY_DOWNLOADS prioritizes
