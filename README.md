@@ -1,8 +1,11 @@
 <p align="center">
   <img src="./static/pypi.svg" alt="PyPI Scout Logo" width="200">
 </p>
-
-![Demo](./static/demo.gif)
+</br>
+<p align="center" style="font-size: 1.5em; font-weight: bold;">
+  <a href="https://pypiscout.com" target="_blank" style="text-decoration: none; color: #007acc;">✨ Try it out at pypiscout.com ✨</a>
+</p>
+</br>
 
 ## What does this do?
 
