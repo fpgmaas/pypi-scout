@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <div className="min-h-screen w-full bg-sky-950 flex flex-col items-center">
       <Header />
-      <main className="w-full max-w-[2200px] flex flex-col items-center p-4 space-y-4">
+      <main className="w-full max-w-[2200px] flex flex-col items-center p-4 md:p-12 space-y-4">
         <div className="flex flex-col items-center text-center mb-4">
           <picture>
             <img
