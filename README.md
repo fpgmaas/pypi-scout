@@ -1,9 +1,9 @@
 <p align="center">
   <img src="./static/pypi.svg" alt="PyPI Scout Logo" width="300">
 </p>
-<p align="center" style="font-size: 1.5em; font-weight: bold;">
+<h3 align="center" style="font-size: 1.5em; font-weight: bold;">
   <a href="https://pypiscout.com" target="_blank" style="text-decoration: none; color: #007acc;">✨ Try it out at pypiscout.com ✨</a>
-</p>
+</h3>
 </br>
 
 ## What does this do?
