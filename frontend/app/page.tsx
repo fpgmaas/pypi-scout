@@ -48,7 +48,7 @@ export default function Home() {
   return (
     <div className="min-h-screen w-full bg-sky-950 flex flex-col items-center">
       <Header />
-      <main className="w-full max-w-[2200px] flex flex-col items-center p-4 md:p-12 space-y-4">
+      <main className="w-full max-w-[1800px] flex flex-col items-center p-4 md:p-12 lg:p-18 space-y-4">
         <div className="flex flex-col items-center text-center mb-4">
           <picture>
             <img
@@ -64,7 +64,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center space-y-4 w-full max-w-5xl bg-sky-900 p-6 rounded-lg shadow-lg">
+        <div className="flex flex-col items-center space-y-4 w-full max-w-3xl bg-sky-900 p-6 rounded-lg shadow-lg">
           <textarea
             className="placeholder-gray-400 w-full h-24 p-2 border border-sky-900 rounded resize-none overflow-auto focus:outline-none focus:ring-2 focus:ring-sky-800 bg-white text-sky-950"
             value={text}
