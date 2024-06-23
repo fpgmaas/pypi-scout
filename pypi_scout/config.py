@@ -16,7 +16,7 @@ class Config:
     EMBEDDINGS_MODEL_NAME = "all-mpnet-base-v2"
 
     # Boolean to overwrite raw data file if it already exists
-    OVERWRITE: bool = False
+    OVERWRITE: bool = True
 
     # Directory where dataset files are stored.
     DATA_DIR: Path = Path("data")
@@ -36,7 +36,7 @@ class Config:
     EMBEDDINGS_PARQUET_NAME = "embeddings.parquet"
 
     # Google Drive file ID for downloading the raw dataset.
-    GOOGLE_FILE_ID = "1huR7-VD3AieBRCcQyRX9MWbPLMb_czjq"
+    GOOGLE_FILE_ID = "1IDJvCsq1gz0yUSXgff13pMl3nUk7zJzb"
 
     # Number of top results to return for a query.
     N_RESULTS_TO_RETURN = 40

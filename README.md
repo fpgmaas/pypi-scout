@@ -12,7 +12,7 @@ Inspired by [this blog post](https://koaning.io/posts/search-boxes/) about findi
 
 ## How does this work?
 
-The project works by collecting project summaries and descriptions for all packages on PyPI with more than 50 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to the amount of weekly downloads before presenting the results to the user in a dashboard.
+The project works by collecting project summaries and descriptions for all packages on PyPI with more than 100 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to the amount of weekly downloads before presenting the results to the user in a dashboard.
 
 ## Stack
 
@@ -52,7 +52,7 @@ There are three methods to run the setup script, dependent on if you have a NVID
 - [Option 3: Using Docker without NVIDIA GPU and NVIDIA Container Toolkit](SETUP.md#option-3-using-docker-without-nvidia-gpu-and-nvidia-container-toolkit)
 
 > [!NOTE]
-> Although the dataset contains all packages on PyPI with more than 50 weekly downloads, by default only the top 25% of packages with the highest weekly downloads (those with more than approximately 650 downloads per week) are added to the vector database. To include packages with less weekly downloads in the database, you can increase the value of `FRAC_DATA_TO_INCLUDE` in `pypi_scout/config.py`.
+> Although the dataset contains all packages on PyPI with more than 50 weekly downloads, by default only the top 40% of this dataset (those with more than approximately 250 downloads per week) are added to the vector database. To include packages with less weekly downloads in the database, you can increase the value of `FRAC_DATA_TO_INCLUDE` in `pypi_scout/config.py`.
 
 #### 3. **Run the Application**
 
