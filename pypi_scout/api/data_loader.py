@@ -19,6 +19,7 @@ class ApiDataLoader:
         else:
             raise ValueError(f"Unexpected value found for STORAGE_BACKEND: {self.config.STORAGE_BACKEND}")  # noqa: TRY003
 
+        df_embeddings = self._drop_rows_from_embeddings_that_do_not_appear_in_packages(df_embeddings, df_packages)
         return df_packages, df_embeddings
 
     def _load_local_dataset(self) -> Tuple[pl.DataFrame, pl.DataFrame]:
@@ -56,10 +57,22 @@ class ApiDataLoader:
 
         return df_packages, df_embeddings
 
-    def _log_packages_dataset_info(self, df_packages: pl.DataFrame) -> None:
+    @staticmethod
+    def _log_packages_dataset_info(df_packages: pl.DataFrame) -> None:
         logging.info(f"Finished loading the `packages` dataset. Number of rows in dataset: {len(df_packages):,}")
         logging.info(df_packages.describe())
 
-    def _log_embeddings_dataset_info(self, df_embeddings: pl.DataFrame) -> None:
+    @staticmethod
+    def _log_embeddings_dataset_info(df_embeddings: pl.DataFrame) -> None:
         logging.info(f"Finished loading the `embeddings` dataset. Number of rows in dataset: {len(df_embeddings):,}")
         logging.info(df_embeddings.describe())
+
+    @staticmethod
+    def _drop_rows_from_embeddings_that_do_not_appear_in_packages(df_embeddings, df_packages):
+        # We only keep the packages in the vector dataset that also occur in the packages dataset.
+        # In theory, this should never drop something. But still good to keep as a fail-safe to prevent issues in the API.
+        logging.info("Dropping packages in the `embeddings` dataset that do not occur in the `packages` dataset...")
+        logging.info(f"Number of rows before dropping: {len(df_embeddings):,}...")
+        df_embeddings = df_embeddings.join(df_packages, on="name", how="semi")
+        logging.info(f"Number of rows after dropping: {len(df_embeddings):,}...")
+        return df_embeddings
