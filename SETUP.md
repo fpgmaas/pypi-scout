@@ -3,8 +3,8 @@
 The setup script will:
 
 - Download and process the PyPI dataset and store the results in the `data` directory.
-- Set up your Pinecone index.
-- Create vector embeddings for the PyPI dataset and upsert them to the Pinecone index.
+- Create vector embeddings for the PyPI dataset.
+- If the `STORAGE_BACKEND` environment variable is set to `BLOB`: Upload the datasets to blob storage.
 
 There are three ways to run the setup script:
 
