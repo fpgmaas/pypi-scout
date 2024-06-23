@@ -11,11 +11,11 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 from starlette.requests import Request
 
-from pypi_scout.api.utils import load_dataset
+from pypi_scout.api.data_loader import ApiDataLoader
 from pypi_scout.config import Config
+from pypi_scout.embeddings.simple_vector_database import SimpleVectorDatabase
 from pypi_scout.utils.logging import setup_logging
 from pypi_scout.utils.score_calculator import calculate_score
-from pypi_scout.vector_database import VectorDatabaseInterface
 
 # Setup logging
 setup_logging()
@@ -40,16 +40,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load dataset and initialize model and vector database interface
-df = load_dataset(config)
+data_loader = ApiDataLoader(config)
+df_packages, df_embeddings = data_loader.load_dataset()
+
 model = SentenceTransformer(config.EMBEDDINGS_MODEL_NAME)
 
-vector_database_interface = VectorDatabaseInterface(
-    pinecone_token=config.PINECONE_TOKEN,
-    pinecone_index_name=config.PINECONE_INDEX_NAME,
-    embeddings_model=model,
-    pinecone_namespace=config.PINECONE_NAMESPACE,
-)
+vector_database = SimpleVectorDatabase(embeddings_model=model, df_embeddings=df_embeddings)
 
 
 class QueryModel(BaseModel):
@@ -83,8 +79,8 @@ async def search(query: QueryModel, request: Request):
         raise HTTPException(status_code=400, detail="top_k cannot be larger than 100.")
 
     logging.info(f"Searching for similar projects. Query: '{query.query}'")
-    df_matches = vector_database_interface.find_similar(query.query, top_k=query.top_k * 2)
-    df_matches = df_matches.join(df, how="left", on="name")
+    df_matches = vector_database.find_similar(query.query, top_k=query.top_k * 2)
+    df_matches = df_matches.join(df_packages, how="left", on="name")
     logging.info(
         f"Fetched the {len(df_matches)} most similar projects. Calculating the weighted scores and filtering..."
     )
@@ -110,5 +106,5 @@ async def search(query: QueryModel, request: Request):
         df_matches = df_matches.head(query.top_k)
 
     logging.info(f"Returning the {len(df_matches)} best matches.")
-
+    df_matches = df_matches.select(["name", "similarity", "summary", "weekly_downloads"])
     return SearchResponse(matches=df_matches.to_dicts(), warning=warning, warning_message=warning_message)

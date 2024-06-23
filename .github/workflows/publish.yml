@@ -55,3 +55,4 @@ jobs:
           tags: pypiscoutacr.azurecr.io/pypi-scout-frontend:latest
           build-args: |
             NEXT_PUBLIC_API_URL=https://pypiscout.com/api
+            NEXT_PUBLIC_GA_TRACKING_ID=${{ secrets.NEXT_PUBLIC_GA_TRACKING_ID }}

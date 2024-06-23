@@ -25,7 +25,7 @@ class DescriptionCleaner:
         Returns:
             pl.DataFrame: The modified DataFrame with the cleaned text.
         """
-        df = df.with_columns(pl.col(input_col).apply(self._clean_text).alias(output_col))
+        df = df.with_columns(pl.col(input_col).map_elements(self._clean_text, return_dtype=pl.String).alias(output_col))
         return df
 
     def _clean_text(self, text: str) -> str:

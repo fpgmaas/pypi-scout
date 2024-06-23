@@ -12,48 +12,38 @@ Inspired by [this blog post](https://koaning.io/posts/search-boxes/) about findi
 
 ## How does this work?
 
-The project works by collecting project summaries and descriptions for all packages on PyPI with more than 50 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to the amount of weekly downloads before presenting the results to the user in a dashboard.
+The project works by collecting project summaries and descriptions for all packages on PyPI with more than 100 weekly downloads. These are then converted into vector representations using [Sentence Transformers](https://www.sbert.net/). When the user enters a query, it is converted into a vector representation, and the most similar package descriptions are fetched from the vector database. Additional weight is given to the amount of weekly downloads before presenting the results to the user in a dashboard.
 
-## Architecture
+## Stack
 
 The project uses the following technologies:
 
-1. **[Pinecone](https://www.pinecone.io/)** as vector database
-2. **[FastAPI](https://fastapi.tiangolo.com/)** for the API backend
-3. **[NextJS](https://nextjs.org/) and [TailwindCSS](https://tailwindcss.com/)** for the frontend
-4. **[Sentence Transformers](https://www.sbert.net/)** for vector embeddings
-
-<br/>
-
-![Architecture](./static/architecture.png)
+1. **[FastAPI](https://fastapi.tiangolo.com/)** for the API backend
+2. **[NextJS](https://nextjs.org/) and [TailwindCSS](https://tailwindcss.com/)** for the frontend
+3. **[Sentence Transformers](https://www.sbert.net/)** for vector embeddings
 
 ## Getting Started
 
-### Prerequisites
-
-1. **Set Up Pinecone**
-
-   Since PyPI Scout uses [Pinecone](https://www.pinecone.io/) as the vector database, register for a free account on their website. Obtain your API key using the instructions [here](https://docs.pinecone.io/guides/get-started/quickstart).
-
-2. **Create a `.env` File**
-
-   Copy the `.env.template` to create a new `.env` file:
-
-   ```sh
-   cp .env.template .env
-   ```
-
-   Then add your Pinecone API key from step 1 to this file.
-
 ### Build and Setup
 
-#### 1. **Run the Setup Script**
+#### 1. (Optional) **Create a `.env` file**
+
+By default, all data will be stored on your local machine. It is also possible to store the data for the API on Azure Blob storage, and
+have the API read from there. To do so, create a `.env` file:
+
+```sh
+cp .env.template .env
+```
+
+and fill in the required fields.
+
+#### 2. **Run the Setup Script**
 
 The setup script will:
 
 - Download and process the PyPI dataset and store the results in the `data` directory.
-- Set up your Pinecone index.
-- Create vector embeddings for the PyPI dataset and upsert them to the Pinecone index.
+- Create vector embeddings for the PyPI dataset.
+- If the `STORAGE_BACKEND` environment variable is set to `BLOB`: Upload the datasets to blob storage.
 
 There are three methods to run the setup script, dependent on if you have a NVIDIA GPU and [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) installed. Please run the setup script using the method that is applicable for you:
 
@@ -62,9 +52,10 @@ There are three methods to run the setup script, dependent on if you have a NVID
 - [Option 3: Using Docker without NVIDIA GPU and NVIDIA Container Toolkit](SETUP.md#option-3-using-docker-without-nvidia-gpu-and-nvidia-container-toolkit)
 
 > [!NOTE]
-> Although the dataset contains all packages on PyPI with more than 50 weekly downloads, by default only the top 25% of packages with the highest weekly downloads (those with more than approximately 650 downloads per week) are added to the vector database. To include packages with less weekly downloads in the database, you can increase the value of `FRAC_DATA_TO_INCLUDE` in `pypi_scout/config.py`.
+> The dataset contains approximately 100.000 packages on PyPI with more than 100 weekly downloads. To speed up local development,
+> you can lower the amount of packages that is processed locally by lowering the value of `FRAC_DATA_TO_INCLUDE` in `pypi_scout/config.py`.
 
-#### 2. **Run the Application**
+#### 3. **Run the Application**
 
 Start the application using Docker Compose:
 

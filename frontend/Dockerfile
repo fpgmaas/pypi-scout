@@ -13,11 +13,11 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
-# Build argument to accept the API URL during build time
+# Add build arguments to environment
 ARG NEXT_PUBLIC_API_URL
-
-# Set environment variable within the container
+ARG NEXT_PUBLIC_GA_TRACKING_ID
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_PUBLIC_GA_TRACKING_ID=${NEXT_PUBLIC_GA_TRACKING_ID}
 
 # Build the Next.js application
 RUN npm run build

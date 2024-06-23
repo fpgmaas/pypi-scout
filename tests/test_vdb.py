@@ -4,51 +4,53 @@ import numpy as np
 import polars as pl
 import pytest
 
-from pypi_scout.vector_database.interface import VectorDatabaseInterface
+from pypi_scout.embeddings.simple_vector_database import SimpleVectorDatabase
 
 
 @pytest.fixture
-def mock_pinecone(mocker):
-    mock_pinecone = mocker.patch("pypi_scout.vector_database.interface.Pinecone").return_value
-    mock_index = MagicMock()
-    mock_pinecone.Index.return_value = mock_index
-    return mock_pinecone, mock_index
+def mock_model():
+    # Mock the SentenceTransformer model
+    mock_model = MagicMock()
+    # Mock the encode method to return a fixed vector
+    mock_model.encode.return_value = np.array([0.5, 0.5, 0.5])
+    return mock_model
 
 
 @pytest.fixture
-def mock_model(mocker):
-    return mocker.patch("pypi_scout.vector_database.interface.SentenceTransformer").return_value
-
-
-@pytest.fixture
-def vdb(mock_pinecone, mock_model):
-    return VectorDatabaseInterface(
-        pinecone_token="fake_token",  # noqa: S106
-        pinecone_index_name="fake_index",
-        pinecone_namespace="fake_namespace",
-        embeddings_model=mock_model,
-        batch_size=2,
+def df_embeddings():
+    return pl.DataFrame(
+        {
+            "id": [1, 2, 3],
+            "text": ["Hello world", "Hi there", "Greetings"],
+            "embeddings": [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]],
+        }
     )
 
 
-def test_initialization(mock_pinecone, mock_model, vdb):
-    mock_pinecone[0].Index.assert_called_with("fake_index")
-    assert vdb.pinecone_namespace == "fake_namespace"
-    assert vdb.batch_size == 2
-    assert vdb.model == mock_model
+@pytest.fixture
+def vector_db(mock_model, df_embeddings):
+    return SimpleVectorDatabase(embeddings_model=mock_model, df_embeddings=df_embeddings)
 
 
-def test_find_similar(mock_model, vdb):
-    # Mock the model.encode method
-    mock_model.encode.return_value = np.array([0.1] * 768)
+def test_embeddings_matrix_creation(vector_db):
+    expected_matrix = np.array(
+        [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]], dtype=np.float32
+    )  # Ensure the expected matrix has dtype float32
 
-    # Mock the Pinecone query method
-    vdb.index.query.return_value = {"matches": [{"id": "1", "score": 0.99}, {"id": "2", "score": 0.98}]}
+    np.testing.assert_allclose(vector_db.embeddings_matrix, expected_matrix, rtol=1e-6, atol=1e-8)
 
-    result_df = vdb.find_similar(query="test query", top_k=2)
 
-    # Create expected DataFrame
-    expected_df = pl.DataFrame([{"name": "1", "similarity": 0.99}, {"name": "2", "similarity": 0.98}])
+def test_find_similar(vector_db):
+    query = "Hello"
+    result = vector_db.find_similar(query, top_k=2)
 
-    # Check that the result matches the expected DataFrame
-    assert result_df.equals(expected_df)
+    # Check that the result has the expected number of rows
+    assert result.shape[0] == 2
+
+    # Check that the similarity scores are between 0 and 1
+    assert result["similarity"].min() >= 0
+    assert result["similarity"].max() <= 1
+
+    # Check that the result contains the expected columns
+    expected_columns = ["id", "text", "similarity"]
+    assert set(result.columns) == set(expected_columns)

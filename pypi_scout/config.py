@@ -1,5 +1,5 @@
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
@@ -11,23 +11,11 @@ class StorageBackend(Enum):
 
 @dataclass
 class Config:
-    # Name of the Pinecone index used for storing vector representations of the package descriptions.
-    PINECONE_INDEX_NAME = "pypi"
-
-    # Namespace within the Pinecone index to logically separate data.
-    PINECONE_NAMESPACE = "ns1"
-
-    # API token for authenticating with Pinecone. Should be set as an environment variable.
-    PINECONE_TOKEN: str = field(default_factory=lambda: os.getenv("PINECONE_TOKEN"))
-
     # Name of the model used for generating vector embeddings from text.
     # See https://sbert.net/docs/sentence_transformer/pretrained_models.html for available models.
     EMBEDDINGS_MODEL_NAME = "all-mpnet-base-v2"
 
-    # Dimension of the vector embeddings produced by the model. Should match the output of the model above.
-    EMBEDDINGS_DIMENSION = 768
-
-    # Boolean to overwrite existing files. e.g. re-download the raw dataset, upload processed dataset to blob, etc.
+    # Boolean to overwrite raw data file if it already exists
     OVERWRITE: bool = True
 
     # Directory where dataset files are stored.
@@ -43,22 +31,26 @@ class Config:
     # For example; it needs the name, weekly downloads, and the summary, but not the (cleaned) description.
     DATASET_FOR_API_CSV_NAME = "dataset_for_api.csv"
 
+    # Filename for the dataset that contains the minimal data that the API needs.
+    # For example; it needs the name, weekly downloads, and the summary, but not the (cleaned) description.
+    EMBEDDINGS_PARQUET_NAME = "embeddings.parquet"
+
     # Google Drive file ID for downloading the raw dataset.
-    GOOGLE_FILE_ID = "1huR7-VD3AieBRCcQyRX9MWbPLMb_czjq"
+    GOOGLE_FILE_ID = "1IDJvCsq1gz0yUSXgff13pMl3nUk7zJzb"
 
     # Number of top results to return for a query.
-    N_RESULTS_TO_RETURN = 30
+    N_RESULTS_TO_RETURN = 40
 
     # Fraction of the dataset to include in the vector database. This value determines the portion of top packages
     # (sorted by weekly downloads) to include. Increase this value to include a larger portion of the dataset, up to 1.0 (100%).
     # For reference, a value of 0.25 corresponds to including all PyPI packages with at least approximately 650 weekly downloads
-    FRAC_DATA_TO_INCLUDE = 0.25
+    FRAC_DATA_TO_INCLUDE = 1
 
     # Weights for the combined score calculation. Higher WEIGHT_SIMILARITY prioritizes
     # relevance based on text similarity, while higher WEIGHT_WEEKLY_DOWNLOADS prioritizes
     # packages with more weekly downloads.
-    WEIGHT_SIMILARITY = 0.6
-    WEIGHT_WEEKLY_DOWNLOADS = 0.4
+    WEIGHT_SIMILARITY = 0.5
+    WEIGHT_WEEKLY_DOWNLOADS = 0.5
 
     # Storage backend configuration. Can be either StorageBackend.LOCAL or StorageBackend.BLOB.
     # If StorageBackend.BLOB, the processed dataset will be uploaded to Blob, and the backend API
@@ -70,9 +62,6 @@ class Config:
     STORAGE_BACKEND_BLOB_KEY: str | None = None
 
     def __post_init__(self) -> None:
-        if not self.PINECONE_TOKEN:
-            raise OSError("PINECONE_TOKEN not found in environment variables")  # noqa: TRY003
-
         if os.getenv("STORAGE_BACKEND") == "BLOB":
             self.STORAGE_BACKEND = StorageBackend.BLOB
             self.STORAGE_BACKEND_BLOB_ACCOUNT_NAME = os.getenv("STORAGE_BACKEND_BLOB_ACCOUNT_NAME")

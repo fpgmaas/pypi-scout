@@ -5,11 +5,11 @@ WITH recent_downloads AS (
   FROM
     `bigquery-public-data.pypi.file_downloads`
   WHERE
-    DATE(timestamp) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 28 DAY) AND CURRENT_DATE()
+    DATE(timestamp) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) AND CURRENT_DATE()
   GROUP BY
     project
   HAVING
-    download_count >= 250
+    download_count >= 100
 )
 SELECT
   rd.project AS name,
