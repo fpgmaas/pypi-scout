@@ -33,8 +33,8 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
 
   return (
     <div className="overflow-x-auto w-full">
-      <table className="min-w-full divide-y divide-gray-700">
-        <thead className="bg-gray-800">
+      <table className="min-w-full divide-y divide-sky-800">
+        <thead className="bg-sky-950">
           <tr>
             <th
               className="px-4 py-2 text-left text-xs font-medium text-gray-200 uppercase tracking-wider cursor-pointer whitespace-nowrap"
@@ -72,9 +72,9 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
             </th>
           </tr>
         </thead>
-        <tbody className="bg-gray-800 divide-y divide-gray-700">
+        <tbody className="bg-sky-900 divide-y divide-sky-800">
           {results.map((result, index) => (
-            <tr key={index} className="hover:bg-gray-700">
+            <tr key={index} className="hover:bg-sky-800">
               <td className="px-4 py-2 whitespace-nowrap text-gray-200">
                 {truncateText(result.name, 20)}
               </td>
@@ -92,7 +92,7 @@ const SearchResultsTable: React.FC<SearchResultsTableProps> = ({
                   href={`https://pypi.org/project/${result.name}/`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-400 hover:underline flex items-center"
+                  className="text-sky-500 hover:underline flex items-center hover:text-orange-800"
                 >
                   <FaExternalLinkAlt className="mr-1" />
                   PyPI

@@ -6,7 +6,7 @@ const SupportButton: React.FC = () => {
       href="https://ko-fi.com/fpgmaas"
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center p-2 border border-gray-700 rounded bg-gray-900 text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-700"
+      className="flex items-center p-2 border border-sky-700 rounded bg-sky-900 text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-700"
     >
       <img
         src="kofi.png"
