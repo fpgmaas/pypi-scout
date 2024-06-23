@@ -24,17 +24,13 @@ build: ## Build wheel file using poetry
 	@echo "🚀 Creating wheel file"
 	@poetry build
 
-.PHONY: docs-test
-docs-test: ## Test if documentation can be built without warnings or errors
-	@poetry run mkdocs build -s
-
-.PHONY: docs
-docs: ## Build and serve the documentation
-	@poetry run mkdocs serve
-
 .PHONY: serve
-serve: ## Serve API with uvicorn
+serve: ## Serve API with uvicorn in development mode
 	@poetry run uvicorn pypi_scout.api.main:app --reload
+
+.PHONY: frontend
+frontend: ## Serve frontend in development mode
+	@cd frontend; npm run dev
 
 .PHONY: help
 help:
