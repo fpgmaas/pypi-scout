@@ -38,9 +38,6 @@ class Config:
     # Google Drive file ID for downloading the raw dataset.
     GOOGLE_FILE_ID = "1IDJvCsq1gz0yUSXgff13pMl3nUk7zJzb"
 
-    # Number of top results to return for a query.
-    N_RESULTS_TO_RETURN = 40
-
     # Fraction of the dataset to include in the vector database. This value determines the portion of top packages
     # (sorted by weekly downloads) to include. Increase this value to include a larger portion of the dataset, up to 1.0 (100%).
     # For reference, a value of 0.25 corresponds to including all PyPI packages with at least approximately 650 weekly downloads

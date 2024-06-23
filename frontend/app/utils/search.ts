@@ -30,6 +30,7 @@ export const handleSearch = async (
       `${apiUrl}/search`,
       {
         query: query,
+        top_k: 40,
       },
       {
         headers: {
