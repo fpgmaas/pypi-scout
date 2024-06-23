@@ -1,8 +1,13 @@
 import tempfile
-from io import BytesIO
+from enum import Enum
 
 import polars as pl
 from azure.storage.blob import BlobServiceClient
+
+
+class Format(Enum):
+    CSV = "csv"
+    PARQUET = "parquet"
 
 
 class BlobIO:
@@ -15,32 +20,33 @@ class BlobIO:
         )
         self.container_client = self.service_client.get_container_client(container_name)
 
-    def upload_csv(self, data_frame: pl.DataFrame, blob_name: str) -> None:
-        csv_buffer = BytesIO()
-        data_frame.write_csv(csv_buffer)
-        csv_buffer.seek(0)  # Reset buffer position to the beginning
-        blob_client = self.container_client.get_blob_client(blob_name)
-        blob_client.upload_blob(csv_buffer, overwrite=True)
-
-    def upload_local_csv(self, local_file_path: str, blob_name: str) -> None:
+    def upload_local_file(self, local_file_path: str, blob_name: str) -> None:
         with open(local_file_path, "rb") as data:
             blob_client = self.container_client.get_blob_client(blob_name)
             blob_client.upload_blob(data, overwrite=True)
 
-    def download_csv(self, blob_name: str) -> pl.DataFrame:
+    def download_csv_to_df(self, blob_name: str):
+        return self._download_as_df(blob_name, Format.CSV)
+
+    def download_parquet_to_df(self, blob_name: str):
+        return self._download_as_df(blob_name, Format.PARQUET)
+
+    def _download_as_df(self, blob_name: str, format: Format) -> pl.DataFrame:  # noqa: A002
+        """
+        //TODO: Improve by not reading into a file first.
+        """
         blob_client = self.container_client.get_blob_client(blob_name)
         download_stream = blob_client.download_blob()
 
-        # Create a temporary file
         with tempfile.NamedTemporaryFile(delete=True) as temp_file:
-            # Download the blob content into the temporary file
             temp_file.write(download_stream.readall())
             temp_file.flush()
 
-            # Read the CSV using Polars
-            df = pl.read_csv(temp_file.name)
+            if format == Format.CSV:
+                return pl.read_csv(temp_file.name)
 
-        return df
+            if format == Format.PARQUET:
+                return pl.read_parquet(temp_file.name)
 
     def exists(self, blob_name):
         blob_client = self.container_client.get_blob_client(blob_name)
