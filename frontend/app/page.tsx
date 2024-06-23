@@ -31,6 +31,20 @@ export default function Home() {
     setResults(sortResults(results, field, direction));
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSearch(
+        text,
+        sortField,
+        sortDirection,
+        setResults,
+        setLoading,
+        setError,
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen w-full bg-sky-950 flex flex-col items-center">
       <Header />
@@ -55,6 +69,7 @@ export default function Home() {
             className="placeholder-gray-400 w-full h-24 p-2 border border-sky-900 rounded resize-none overflow-auto focus:outline-none focus:ring-2 focus:ring-sky-800 bg-white text-sky-950"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="Describe what you are looking for... "
           ></textarea>
           <button
