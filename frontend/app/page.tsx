@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { handleSearch, sortResults } from "./utils/search";
 import SearchResultsTable from "./components/SearchResultsTable";
 import InfoBox from "./components/InfoBox";
+import ScatterPlot from "./components/ScatterPlot";
+import ToggleSwitch from "./components/ToggleSwitch";
 import { ClipLoader } from "react-spinners";
 import Header from "./components/Header";
 
@@ -22,6 +24,22 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [infoBoxVisible, setInfoBoxVisible] = useState<boolean>(false);
+  const [view, setView] = useState<string>("Plot");
+
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  // If user is on small screen, we probably
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setView("Table");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (results.length > 0) {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [results]);
 
   const handleSort = (field: string) => {
     const direction =
@@ -31,17 +49,21 @@ export default function Home() {
     setResults(sortResults(results, field, direction));
   };
 
+  const handleSearchAction = () => {
+    handleSearch(
+      text,
+      sortField,
+      sortDirection,
+      setResults,
+      setLoading,
+      setError,
+    );
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSearch(
-        text,
-        sortField,
-        sortDirection,
-        setResults,
-        setLoading,
-        setError,
-      );
+      handleSearchAction();
     }
   };
 
@@ -74,16 +96,7 @@ export default function Home() {
           ></textarea>
           <button
             className="w-full max-w-[250px] p-2 border border-sky-900 rounded bg-sky-950 text-white hover:bg-sky-700 hover:outline-none hover:ring-1 hover:ring-sky-700"
-            onClick={() =>
-              handleSearch(
-                text,
-                sortField,
-                sortDirection,
-                setResults,
-                setLoading,
-                setError,
-              )
-            }
+            onClick={handleSearchAction}
           >
             Search
           </button>
@@ -91,6 +104,41 @@ export default function Home() {
             <ClipLoader color={"#ffffff"} loading={loading} size={70} />
           )}
           {error && <p className="text-red-500">{error}</p>}
+        </div>
+
+        {results.length > 0 && (
+          <div className="w-full flex justify-center mt-6">
+            <ToggleSwitch
+              option1="Plot"
+              option2="Table"
+              selectedOption={view}
+              onToggle={setView}
+            />
+          </div>
+        )}
+
+        <div ref={resultsRef} className="w-full">
+          {" "}
+          {/* Reference to this div */}
+          {results.length > 0 && view === "Plot" && (
+            <div className="w-full flex justify-center mt-6">
+              <div className="w-full max-w-[1200px] bg-sky-900 p-6 rounded-lg shadow-lg flex flex-col justify-center items-center">
+                <ScatterPlot results={results} />
+              </div>
+            </div>
+          )}
+          {results.length > 0 && view === "Table" && (
+            <div className="w-full flex justify-center mt-6">
+              <div className="w-full bg-sky-900 p-6 rounded-lg shadow-lg flex flex-col  justify-center  items-center">
+                <SearchResultsTable
+                  results={results}
+                  sortField={sortField}
+                  sortDirection={sortDirection}
+                  onSort={handleSort}
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="w-full flex justify-center mt-6">
@@ -103,19 +151,6 @@ export default function Home() {
         </div>
 
         <InfoBox infoBoxVisible={infoBoxVisible} />
-
-        {results.length > 0 && (
-          <div className="w-full flex justify-center mt-6">
-            <div className="w-full max-w-[1800px] bg-sky-900 p-6 rounded-lg shadow-lg flex flex-col items-center">
-              <SearchResultsTable
-                results={results}
-                sortField={sortField}
-                sortDirection={sortDirection}
-                onSort={handleSort}
-              />
-            </div>
-          </div>
-        )}
       </main>
     </div>
   );

@@ -35,12 +35,6 @@ pytest-mock = "^3.14.0"
 deptry = "^0.12.0"
 pre-commit = "^3.4.0"
 tox = "^4.11.1"
-jupyterlab = "^4.2.2"
-
-[tool.poetry.group.docs.dependencies]
-mkdocs = "^1.4.2"
-mkdocs-material = "^9.2.7"
-mkdocstrings = {extras = ["python"], version = "^0.23.0"}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
