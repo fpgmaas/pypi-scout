@@ -9,6 +9,7 @@ import {
   Title,
   LogarithmicScale,
   CategoryScale,
+  FontSpec,
 } from "chart.js";
 
 Chart.register(
@@ -177,16 +178,16 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ results }) => {
             return `\nWeekly downloads: ${dataPoint.y.toLocaleString()}`;
           },
         },
-        titleFont: { size: 16, weight: "bold" },
-        bodyFont: { size: 14 },
-        footerFont: { size: 12 },
+        titleFont: { size: 16, weight: "bold" as FontSpec["weight"] },
+        bodyFont: { size: 14, weight: "normal" as FontSpec["weight"] },
+        footerFont: { size: 12, weight: "normal" as FontSpec["weight"] },
         displayColors: false,
         backgroundColor: "rgba(0, 0, 0, 0.8)",
         padding: 10,
         bodySpacing: 4,
-        titleAlign: "left",
-        bodyAlign: "left",
-        footerAlign: "left",
+        titleAlign: "left" as const,
+        bodyAlign: "left" as const,
+        footerAlign: "left" as const,
       },
       legend: {
         display: false,
@@ -222,7 +223,7 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ results }) => {
           color: "#FFFFFF",
           maxTicksLimit: 5,
         },
-        type: "logarithmic",
+        type: "logarithmic" as const,
       },
     },
     onClick: (event: any, elements: any) => {
