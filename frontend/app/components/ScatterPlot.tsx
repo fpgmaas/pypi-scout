@@ -205,6 +205,10 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ results }) => {
         },
         ticks: {
           color: "#FFFFFF",
+          display: false,
+        },
+        grid: {
+          display: false,
         },
       },
       y: {
@@ -268,7 +272,7 @@ const ScatterPlot: React.FC<ScatterPlotProps> = ({ results }) => {
       <h2 className="text-center text-white mb-4">
         Click a package to go to PyPI
       </h2>
-      <hr className="border-gray-500 mb-4 w-full" />
+      <hr className="border-gray-500 mb-4 w-[700px]" />
       <div className="w-full h-[600px]">
         <Scatter data={data} options={options} plugins={plugins} />
       </div>
