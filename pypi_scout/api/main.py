@@ -43,7 +43,7 @@ vector_database = SimpleVectorDatabase(embeddings_model=model, df_embeddings=df_
 
 
 @app.post("/api/search", response_model=SearchResponse)
-@limiter.limit("4/minute")
+@limiter.limit("6/minute")
 async def search(query: QueryModel, request: Request):
     """
     Search for the packages whose summary and description have the highest similarity to the query.

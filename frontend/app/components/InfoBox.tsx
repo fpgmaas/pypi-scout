@@ -24,7 +24,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({ infoBoxVisible }) => {
         packages on PyPI, which includes all packages with at least ~100
         downloads per week. The results are then scored based on their
         similarity to the query and their number of weekly downloads, and the
-        best results are displayed in the table below.
+        best results are displayed in the plot and table above.
       </p>
     </div>
   );
