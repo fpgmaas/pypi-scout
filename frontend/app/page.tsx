@@ -107,7 +107,7 @@ export default function Home() {
         </div>
 
         {results.length > 0 && (
-          <div className="w-full flex justify-center mt-6">
+          <div className="w-full flex justify-center mt-0">
             <ToggleSwitch
               option1="Plot"
               option2="Table"
@@ -121,14 +121,14 @@ export default function Home() {
           {" "}
           {/* Reference to this div */}
           {results.length > 0 && view === "Plot" && (
-            <div className="w-full flex justify-center mt-6">
+            <div className="w-full flex justify-center mt-0">
               <div className="w-full max-w-[1200px] bg-sky-900 p-6 rounded-lg shadow-lg flex flex-col justify-center items-center">
                 <ScatterPlot results={results} />
               </div>
             </div>
           )}
           {results.length > 0 && view === "Table" && (
-            <div className="w-full flex justify-center mt-6">
+            <div className="w-full flex justify-center mt-0">
               <div className="w-full bg-sky-900 p-6 rounded-lg shadow-lg flex flex-col  justify-center  items-center">
                 <SearchResultsTable
                   results={results}
@@ -143,7 +143,7 @@ export default function Home() {
 
         <div className="w-full flex justify-center mt-6">
           <button
-            className="w-full max-w-[250px] p-2 border border-sky-700 rounded bg-sky-800 text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-700"
+            className="w-full max-w-[250px] p-2 border border-sky-700 rounded bg-sky-900 text-white hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-700"
             onClick={() => setInfoBoxVisible(!infoBoxVisible)}
           >
             {infoBoxVisible ? "Hide Info" : "How does this work?"}
