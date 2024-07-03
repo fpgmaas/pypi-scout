@@ -1,4 +1,3 @@
-import numpy as np
 import polars as pl
 
 
@@ -21,7 +20,7 @@ def calculate_score(
         pl.DataFrame: DataFrame with the combined score and sorted by this score in descending order.
     """
     df = df.with_columns(
-        log_weekly_downloads=pl.col("weekly_downloads").apply(lambda x: np.log1p(x))  # log1p is log(1 + x)
+        log_weekly_downloads=pl.col("weekly_downloads").log1p()  # log1p is log(1 + x)
     )
 
     df = df.with_columns(
