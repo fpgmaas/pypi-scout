@@ -55,7 +55,7 @@ async def search(query: QueryModel, request: Request):
         raise HTTPException(status_code=400, detail="top_k cannot be larger than 100.")
 
     logging.info(f"Searching for similar projects. Query: '{query.query}'")
-    df_matches = vector_database.find_similar(query.query, top_k=query.top_k * 2)
+    df_matches = vector_database.find_similar(query.query, top_k=int(query.top_k * 3))
     df_matches = df_matches.join(df_packages, how="left", on="name")
     logging.info(
         f"Fetched the {len(df_matches)} most similar projects. Calculating the weighted scores and filtering..."
