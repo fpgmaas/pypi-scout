@@ -20,7 +20,6 @@ def calculate_score(
     Returns:
         pl.DataFrame: DataFrame with the combined score and sorted by this score in descending order.
     """
-    print(df.sort("weekly_downloads", descending=True).head(10)["name"])
     df = df.with_columns(
         log_weekly_downloads=pl.col("weekly_downloads").apply(lambda x: np.log1p(x))  # log1p is log(1 + x)
     )
