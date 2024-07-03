@@ -1,5 +1,6 @@
 WITH recent_downloads AS (
   SELECT
+    LOWER(project) AS project_lower,
     project,
     COUNT(*) AS download_count
   FROM
@@ -7,30 +8,35 @@ WITH recent_downloads AS (
   WHERE
     DATE(timestamp) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) AND CURRENT_DATE()
   GROUP BY
-    project
+    LOWER(project), project
   HAVING
-    download_count >= 100
+    COUNT(*) >= 100
+),
+latest_metadata AS (
+  SELECT
+    LOWER(name) AS name_lower,
+    name,
+    description,
+    summary,
+    version,
+    upload_time,
+    ROW_NUMBER() OVER (PARTITION BY LOWER(name) ORDER BY upload_time DESC) AS rn
+  FROM
+    `bigquery-public-data.pypi.distribution_metadata`
 )
 SELECT
-  rd.project AS name,
-  dm.description AS description,
-  dm.summary AS summary,
-  dm.version AS latest_version,
+  lm.name AS name,
+  lm.description AS description,
+  lm.summary AS summary,
+  lm.version AS latest_version,
   rd.download_count AS number_of_downloads
 FROM
   recent_downloads rd
 JOIN
-  `bigquery-public-data.pypi.distribution_metadata` dm
+  latest_metadata lm
 ON
-  rd.project = dm.name
+  rd.project_lower = lm.name_lower
 WHERE
-  dm.upload_time = (
-    SELECT
-      MAX(upload_time)
-    FROM
-      `bigquery-public-data.pypi.distribution_metadata` sub_dm
-    WHERE
-      sub_dm.name = dm.name
-  )
+  lm.rn = 1
 ORDER BY
   rd.download_count DESC;

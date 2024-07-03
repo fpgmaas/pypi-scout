@@ -36,7 +36,7 @@ class Config:
     EMBEDDINGS_PARQUET_NAME = "embeddings.parquet"
 
     # Google Drive file ID for downloading the raw dataset.
-    GOOGLE_FILE_ID = "1IDJvCsq1gz0yUSXgff13pMl3nUk7zJzb"
+    GOOGLE_FILE_ID = "12AH8PwKvZqRhXBf9uS1qRZq1-k3gIhhG"
 
     # Fraction of the dataset to include in the vector database. This value determines the portion of top packages
     # (sorted by weekly downloads) to include. Increase this value to include a larger portion of the dataset, up to 1.0 (100%).
